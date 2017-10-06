@@ -1,5 +1,5 @@
-<p *ngIf="authService.user | async">Welcome {{ (authService.user | async)?.displayName }}!</p>
-
+<span *ngIf="authService.user | async">Welcome {{ (authService.user | async)?.displayName }}!</span>
+<img src="{{(authService.user | async)?.photoURL}}" style="width:30px;height:30px;">
 
 <div *ngIf="!(authService.user | async)">
 
