@@ -1,4 +1,4 @@
-<p *ngIf="authService.user | async">Welcome {{ (authService.user | async)?.email }}!</p>
+<p *ngIf="authService.user | async">Welcome {{ (authService.user | async)?.displayName }}!</p>
 
 
 <div *ngIf="!(authService.user | async)">
@@ -19,11 +19,11 @@
   Logout
 </button>
 
-<button class="loginBtn loginBtn--facebook">
+<button *ngIf="!(authService.user | async)" class="loginBtn loginBtn--facebook">
     Login with Facebook
   </button>
   
-  <button class="loginBtn loginBtn--google">
+  <button *ngIf="!(authService.user | async)" class="loginBtn loginBtn--google" (click)="googleLogin()">
     Login with Google
   </button>
 

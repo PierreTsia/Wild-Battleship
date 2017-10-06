@@ -5,6 +5,7 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { CommonModule } from '@angular/common';
+import { AngularFireDatabaseModule, AngularFireDatabase} from 'angularfire2/database';
 
 import { AuthService } from './auth.service';
 import { FormsModule } from '@angular/forms';
@@ -32,7 +33,7 @@ import { appRoutes } from './components/routing/routing.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     FormsModule,
-
+    AngularFireDatabaseModule,    
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

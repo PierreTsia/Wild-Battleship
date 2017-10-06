@@ -4,12 +4,14 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
 import { Observable } from 'rxjs/Observable';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
 export class AuthService {
   user: Observable<firebase.User>;
+  authState: any = null;
 
-  constructor(private firebaseAuth: AngularFireAuth) {
+  constructor(private firebaseAuth: AngularFireAuth, private db:AngularFireDatabase ) {
     this.user = firebaseAuth.authState;
   }
 
@@ -21,9 +23,9 @@ export class AuthService {
         console.log('Success!', value);
       })
       .catch(err => {
-        console.log('Something went wrong:',err.message);
-        
-      });    
+        console.log('Something went wrong:', err.message);
+
+      });
   }
 
   login(email: string, password: string) {
@@ -34,8 +36,8 @@ export class AuthService {
         console.log('Nice, it worked!');
       })
       .catch(err => {
-        console.log('Something went wrong:',err.message);
-        alert ('Fail');
+        console.log('Something went wrong:', err.message);
+        alert('Fail');
       });
   }
 
@@ -45,4 +47,33 @@ export class AuthService {
       .signOut();
   }
 
+  googleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider()
+    return this.socialSignIn(provider);
+  }
+
+  private socialSignIn(provider) {
+    return this.firebaseAuth.auth.signInWithPopup(provider)
+      .then((credential) => {
+        this.authState = credential.user
+        this.updateUserData()
+      })
+      .catch(error => console.log(error));
+  }
+      get authenticated ():boolean {
+        return this.authState !== null;
+      }
+      get currentUserId():string {
+        return this.authenticated ? this.authState.uid:'';
+      }
+
+      private updateUserData():void {
+        let path = ` users/${this.currentUserId}`;
+        let data = {
+          email:this.authState.email,
+          name: this.authState.displayName
+        }
+        this.db.object(path).update(data)
+        .catch(error=>console.log(error));
+      }
 }
