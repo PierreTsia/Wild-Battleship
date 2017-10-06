@@ -19,7 +19,7 @@
   Logout
 </button>
 
-<button *ngIf="!(authService.user | async)" class="loginBtn loginBtn--facebook">
+<button *ngIf="!(authService.user | async)" class="loginBtn loginBtn--facebook" (click)="facebookLogin()">
     Login with Facebook
   </button>
   

@@ -29,6 +29,9 @@ export class AuthenticationComponent implements OnInit {
   googleLogin(){
     this.authService.googleLogin();
   }
+  facebookLogin(){
+    this.authService.facebookLogin();
+  }
 
 
   ngOnInit() {

@@ -11,7 +11,7 @@ export class AuthService {
   user: Observable<firebase.User>;
   authState: any = null;
 
-  constructor(private firebaseAuth: AngularFireAuth, private db:AngularFireDatabase ) {
+  constructor(private firebaseAuth: AngularFireAuth, private db: AngularFireDatabase) {
     this.user = firebaseAuth.authState;
   }
 
@@ -19,8 +19,9 @@ export class AuthService {
     this.firebaseAuth
       .auth
       .createUserWithEmailAndPassword(email, password)
-      .then(value => {
-        console.log('Success!', value);
+      .then((user) => {
+        this.authState = user
+        this.updateUserData()
       })
       .catch(err => {
         console.log('Something went wrong:', err.message);
@@ -32,13 +33,16 @@ export class AuthService {
     this.firebaseAuth
       .auth
       .signInWithEmailAndPassword(email, password)
-      .then(value => {
-        console.log('Nice, it worked!');
+      .then((user) => {
+        this.authState = user
+        this.updateUserData()
       })
+
       .catch(err => {
         console.log('Something went wrong:', err.message);
         alert('Fail');
       });
+
   }
 
   logout() {
@@ -47,6 +51,10 @@ export class AuthService {
       .signOut();
   }
 
+  facebookLogin() {
+    const provider = new firebase.auth.FacebookAuthProvider()
+    return this.socialSignIn(provider);
+  }
   googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider()
     return this.socialSignIn(provider);
@@ -60,20 +68,20 @@ export class AuthService {
       })
       .catch(error => console.log(error));
   }
-      get authenticated ():boolean {
-        return this.authState !== null;
-      }
-      get currentUserId():string {
-        return this.authenticated ? this.authState.uid:'';
-      }
+  get authenticated(): boolean {
+    return this.authState !== null;
+  }
+  get currentUserId(): string {
+    return this.authenticated ? this.authState.uid : '';
+  }
 
-      private updateUserData():void {
-        let path = ` users/${this.currentUserId}`;
-        let data = {
-          email:this.authState.email,
-          name: this.authState.displayName
-        }
-        this.db.object(path).update(data)
-        .catch(error=>console.log(error));
-      }
+  private updateUserData(): void {
+    let path = ` users/${this.currentUserId}`;
+    let data = {
+      email: this.authState.email,
+      name: this.authState.displayName
+    }
+    this.db.object(path).update(data)
+      .catch(error => console.log(error));
+  }
 }
