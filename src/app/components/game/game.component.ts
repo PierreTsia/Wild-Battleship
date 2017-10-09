@@ -8,6 +8,19 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
+  grilleVierge = [
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"]
+  ];
+
+  
   grille = [
     ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
     ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
@@ -44,23 +57,14 @@ export class GameComponent implements OnInit {
     tmpGrid[x][y] = "Clicked";
 
     this.db.object("/grid").update(tmpGrid);
-    let clickedSquare = tmpGrid[x][y];
+   // let clickedSquare = tmpGrid[x][y];
     
 
   }
 
   resetGrid(){
-    this.grille=[
-      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-      ["water", "water", "water", "water", "water", "water", "water", "water", "water"]
-    ];
+    this.db.object("/grid").update(this.grille);
+    
   }
 
 
