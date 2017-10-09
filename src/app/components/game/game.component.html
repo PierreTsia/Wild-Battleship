@@ -1,3 +1,13 @@
 <p>
   game works!
 </p>
+<button (click)="initBoard()" class="btn btn-primary">Init</button>
+<p>{{square}}</p>
+
+<div class="grille">
+  <ul id="{{x}}" *ngFor="let i of grille; let x = index">
+    <li class="{{j}}" *ngFor="let j of i; let y = index" (click)="onItemClicked(x, y)">
+      {{j}}
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,22 @@
+.grille {
+    background-color: red;
+    width:1200px;
+    border : 1px, solid, blue;
+}
+
+ul {
+    display: inline-block;
+    margin:0;
+    padding: 0;
+    
+}
+
+li {
+    height: 50px;
+    width:50px;
+    background-color: green;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid black;
+}

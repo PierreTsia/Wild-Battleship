@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-game',
@@ -6,10 +8,40 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
+  grille = [
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+    ["water", "water", "water", "water", "water", "water", "water", "water", "water"]
+  ];
 
-  constructor() { }
+
+
+  constructor(private db: AngularFireDatabase) { }
 
   ngOnInit() {
+    this.db.object("/grid").update(this.grille);
+    this.db.object("/grid").valueChanges().subscribe((data: string[][]) => {
+      console.log(data);
+      this.grille = data;
+    });
   }
+
+  onItemClicked(x, y) {
+
+    let tmpGrid = Object.assign({}, this.grille);
+
+    tmpGrid[x][y] = "Clicked";
+    console.log(x);
+    console.log(y);
+    this.db.object("/grid").update(tmpGrid);
+
+  }
+
 
 }
