@@ -10,22 +10,26 @@ import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/dat
 export class AuthService {
   user: Observable<firebase.User>;
   authState: any = null;
+  userFirebase;
 
   constructor(private firebaseAuth: AngularFireAuth, private db: AngularFireDatabase) {
     this.user = firebaseAuth.authState;
+
+    /**/
   }
 
-  signup(email: string, password: string) {
+  signup(userName: string, email: string, password: string, onError: (string) => void) {
     this.firebaseAuth
       .auth
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
-        this.authState = user
-        this.updateUserData()
+        this.authState = user;
+        this.updateUserData(userName);
       })
       .catch(err => {
         console.log('Something went wrong:', err.message);
-
+        onError(err.code);
+        console.log(err);
       });
   }
 
@@ -34,21 +38,16 @@ export class AuthService {
       .auth
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
-        this.authState = user
-        this.updateUserData()
+        this.authState = user;
       })
-
       .catch(err => {
         console.log('Something went wrong:', err.message);
-        alert('Fail');
       });
 
   }
 
   logout() {
-    this.firebaseAuth
-      .auth
-      .signOut();
+    this.firebaseAuth.auth.signOut();
   }
 
   facebookLogin() {
@@ -63,25 +62,35 @@ export class AuthService {
   private socialSignIn(provider) {
     return this.firebaseAuth.auth.signInWithPopup(provider)
       .then((credential) => {
-        this.authState = credential.user
-        this.updateUserData()
+        this.authState = credential.user;
+        this.updateUserData(this.authState.displayName);
       })
       .catch(error => console.log(error));
   }
+
   get authenticated(): boolean {
     return this.authState !== null;
   }
+
   get currentUserId(): string {
     return this.authenticated ? this.authState.uid : '';
   }
 
-  private updateUserData(): void {
-    let path = ` users/${this.currentUserId}`;
+  private updateUserData(userName: string): void {
+    //let path = `users/${this.currentUserId}`;
+    let path = "users/" + this.currentUserId;
     let data = {
       email: this.authState.email,
-      name: this.authState.displayName
+      name: userName,
     }
-    this.db.object(path).update(data)
+    this.db.object(path)
+      .update(data)
       .catch(error => console.log(error));
+
+    this.db.object(path)
+      .valueChanges()
+      .subscribe((toto) => {
+        console.log(toto);
+      });
   }
 }
