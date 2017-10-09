@@ -20,9 +20,13 @@ export class GameComponent implements OnInit {
     ["water", "water", "water", "water", "water", "water", "water", "water", "water"]
   ];
 
+  isClicked:boolean = false;
+
 
 
   constructor(private db: AngularFireDatabase) { }
+  
+ 
 
   ngOnInit() {
     this.db.object("/grid").update(this.grille);
@@ -33,14 +37,30 @@ export class GameComponent implements OnInit {
   }
 
   onItemClicked(x, y) {
+  
 
     let tmpGrid = Object.assign({}, this.grille);
 
     tmpGrid[x][y] = "Clicked";
-    console.log(x);
-    console.log(y);
-    this.db.object("/grid").update(tmpGrid);
 
+    this.db.object("/grid").update(tmpGrid);
+    let clickedSquare = tmpGrid[x][y];
+    
+
+  }
+
+  resetGrid(){
+    this.grille=[
+      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+      ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
+      ["water", "water", "water", "water", "water", "water", "water", "water", "water"]
+    ];
   }
 
 
