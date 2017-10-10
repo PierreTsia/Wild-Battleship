@@ -1,5 +1,3 @@
-<span *ngIf="authService.user | async">Welcome {{ (authService.user | async)?.name }}!</span>
-<img *ngIf="authService.user | async"src="{{(authService.user | async)?.photoURL}}" style="width:30px;height:30px;">
 
 
 <!--
@@ -18,9 +16,7 @@
   </button>
 </div>
 -->
-<button (click)="logout()" *ngIf="authService.user | async">
-  Logout
-</button>
+
 
 <button *ngIf="!(authService.user | async)" class="loginBtn loginBtn--facebook" (click)="facebookLogin()">
     Login with Facebook

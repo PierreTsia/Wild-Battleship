@@ -50,7 +50,7 @@ export class AuthenticationComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(this.authService.user);
+    
   }
 
 }
