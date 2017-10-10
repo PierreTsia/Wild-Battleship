@@ -15,5 +15,7 @@ export class GameComponent implements OnInit {
    
   }
 
- 
+  onItemClicked(x, y) {
+    console.log("Youhou : " + x + ", " + y);
+  }
 }

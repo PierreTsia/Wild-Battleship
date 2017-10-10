@@ -2,5 +2,11 @@
   game works!
 </p>
 
+<div class="container-fluid">
 
-<app-game-grid></app-game-grid>
+  <div class="col-md-12">
+      <app-game-grid [onClickedItem]="onItemClicked" firebaseDBPath="/grid1"></app-game-grid>
+      <app-game-grid [onClickedItem]="onItemClicked" firebaseDBPath="/grid2"></app-game-grid>
+  </div>
+
+</div>

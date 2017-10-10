@@ -1,8 +1,3 @@
-.grille {
-    background-color: red;
-    width:1200px;
-    border : 1px, solid, blue;
-}
 
 ul {
     display: inline-block;
@@ -21,6 +16,14 @@ li {
     border: 1px solid black;
 }
 
-.clicked{
-    background-color: blue;
+li.water {
+    background: green;
+}
+
+li.waterRed {
+    background: red;
+}
+
+li.clicked {
+    background: blue;
 }
