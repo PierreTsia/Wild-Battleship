@@ -15,8 +15,29 @@ export class AuthService {
   constructor(private firebaseAuth: AngularFireAuth, private db: AngularFireDatabase) {
     this.user = firebaseAuth.authState;
 
-    /**/
+
   }
+
+  /**/
+
+  loggedIn = false;
+  
+    isAuthenticated() {
+      const promise = new Promise(
+        (resolve, reject) => {
+          setTimeout(() => {
+            resolve(this.loggedIn)
+          }, 800);
+  
+        }
+      );
+      return promise;
+    }
+  
+  
+    
+  
+    /**/
 
   signup(userName: string, email: string, password: string, onError: (string) => void) {
     this.firebaseAuth
@@ -39,6 +60,7 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
         this.authState = user;
+        this.loggedIn = true;
       })
       .catch(err => {
         console.log('Something went wrong:', err.message);
@@ -48,6 +70,7 @@ export class AuthService {
 
   logout() {
     this.firebaseAuth.auth.signOut();
+    this.loggedIn = false;
   }
 
   facebookLogin() {
@@ -64,6 +87,7 @@ export class AuthService {
       .then((credential) => {
         this.authState = credential.user;
         this.updateUserData(this.authState.displayName);
+        this.loggedIn = true;
       })
       .catch(error => console.log(error));
   }

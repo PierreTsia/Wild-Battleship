@@ -64,3 +64,20 @@ body { padding: 2em; }
 .loginBtn--google:focus {
   background: #E74B37;
 }
+
+.authButtonsDiv {
+height: 50%;
+width: 400px;
+background opacity: 1;
+text-align: center;
+}
+
+.container {
+padding-left:30%;
+padding-top: 10%;
+padding-right: 30%;
+background-color: #D5C8FF;
+padding-bottom:  10%;
+margin-top: 10%
+  
+}
