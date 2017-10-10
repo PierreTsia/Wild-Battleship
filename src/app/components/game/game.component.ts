@@ -55,6 +55,8 @@ export class GameComponent implements OnInit {
     let tmpGrid = Object.assign({}, this.grille);
 
     tmpGrid[x][y] = "Clicked";
+    console.log(x);
+    console.log(y);
 
     this.db.object("/grid").update(tmpGrid);
    // let clickedSquare = tmpGrid[x][y];
@@ -63,7 +65,7 @@ export class GameComponent implements OnInit {
   }
 
   resetGrid(){
-    this.db.object("/grid").update(this.grille);
+    this.db.object("/grid").update(this.grilleVierge);
     
   }
 
