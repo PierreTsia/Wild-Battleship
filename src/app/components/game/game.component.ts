@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-game',
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
-  grilleVierge = [
+   grilleVierge = [
     ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
     ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
     ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
@@ -49,12 +50,12 @@ export class GameComponent implements OnInit {
     });
   }
 
-  onItemClicked(x, y) {
+  onItemClicked(y, x) {
   
 
     let tmpGrid = Object.assign({}, this.grille);
 
-    tmpGrid[x][y] = "Clicked";
+    tmpGrid[y][x] = "Clicked";
     console.log(x);
     console.log(y);
 

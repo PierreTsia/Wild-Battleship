@@ -20,6 +20,7 @@ import { appRoutes } from './components/routing/routing.component';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,7 @@ import { appRoutes } from './components/routing/routing.component';
     GameComponent,
     NavbarComponent,
     AuthenticationComponent,
-  ],
+      ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
