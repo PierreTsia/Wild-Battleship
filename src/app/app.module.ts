@@ -16,6 +16,8 @@ import { GameComponent } from './components/game/game.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AuthenticationComponent } from './components/authentication/authentication.component';
 import { appRoutes } from './components/routing/routing.component';
+import {GameGridComponent} from './components/game-grid/game-grid.component'
+
 
 
 
@@ -28,6 +30,7 @@ import { appRoutes } from './components/routing/routing.component';
     GameComponent,
     NavbarComponent,
     AuthenticationComponent,
+    GameGridComponent,   
       ],
   imports: [
     BrowserModule,
