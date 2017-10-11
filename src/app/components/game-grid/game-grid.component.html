@@ -1,6 +1,6 @@
-<button (click)="resetGrid()" class="btn btn-primary">Init</button>
+<button *ngIf="isGridFull" (click)="resetGrid()" class="btn btn-primary">Init</button>
 <p>{{square}}</p>
-<button (click)="generatePlayerGrid()"class="btn btn-danger">placeBoat</button>
+<button *ngIf="!isGridFull"(click)="generatePlayerGrid()"class="btn btn-danger">placeBoat</button>
 <div class="grid-block">
   <ul id="{{x}}" *ngFor="let i of grille; let x = index">
     <li *ngFor="let j of i; let y = index" (click)="onItemClicked(x, y)"
