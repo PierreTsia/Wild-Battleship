@@ -17,7 +17,7 @@ export class GameGridComponent implements OnInit {
     if (this.firebaseDBPath == "/grid1") {
       return { 'water': j != 'Clicked', 'clicked': j == 'Clicked', 'boated': j == 'boat' };
     }
-    return { 'waterRed': j != 'Clicked', 'clicked': j == 'Clicked' };
+    return { 'waterRed': j != 'Clicked', 'clicked': j == 'Clicked', 'boated': j == 'boat' };
   }
 
   grilleVierge = [
@@ -46,6 +46,7 @@ export class GameGridComponent implements OnInit {
   ];
 
   isClicked: boolean = false;
+  isGridFull = false;
 
   boat = [[], [], []];
 
@@ -85,6 +86,7 @@ export class GameGridComponent implements OnInit {
 
   resetGrid() {
     this.db.object('room/' + this.firebaseDBPath).update(this.grilleVierge);
+    this.isGridFull = false;
 
   }
   isBoated(grid: string[][], x: number, y: number) {
@@ -212,6 +214,7 @@ export class GameGridComponent implements OnInit {
     this.addShip(3);
     this.addShip(3);
     this.addShip(2);
+    this.isGridFull = true;
   }
 
 }
