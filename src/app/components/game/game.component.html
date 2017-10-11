@@ -2,17 +2,11 @@
   game works!
 </p>
 
+<div class="container-fluid">
 
-<button (click)="resetGrid()" class="btn btn-primary">Init</button>
-<p>{{square}}</p>
+  <div class="col-md-12">
+      <app-game-grid [onClickedItem]="onItemClicked" firebaseDBPath="/grid1"></app-game-grid>
+      <app-game-grid [onClickedItem]="onItemClicked" firebaseDBPath="/grid2"></app-game-grid>
+  </div>
 
-<div class="grille">
-  <ul id="{{x}}" *ngFor="let i of grille; let x = index">
-    <li *ngFor="let j of i; let y = index" 
-    (click)="onItemClicked(x, y)"
-    [ngStyle]="{backgroundColor: j=='Clicked' ? 'blue': 'green'}"
-    >
-      {{j}}
-    </li>
-  </ul>
 </div>

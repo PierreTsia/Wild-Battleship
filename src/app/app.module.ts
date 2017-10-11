@@ -16,7 +16,13 @@ import { GameComponent } from './components/game/game.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AuthenticationComponent } from './components/authentication/authentication.component';
 import { appRoutes } from './components/routing/routing.component';
+<<<<<<< HEAD
 import { AuthGuard } from './guard/auth.guard';
+=======
+import {GameGridComponent} from './components/game-grid/game-grid.component'
+
+
+>>>>>>> dev
 
 
 
@@ -28,6 +34,7 @@ import { AuthGuard } from './guard/auth.guard';
     GameComponent,
     NavbarComponent,
     AuthenticationComponent,
+    GameGridComponent,   
       ],
   imports: [
     BrowserModule,

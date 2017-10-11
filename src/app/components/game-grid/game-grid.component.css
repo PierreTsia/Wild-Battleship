@@ -1,0 +1,29 @@
+
+ul {
+    display: inline-block;
+    margin:0;
+    padding: 0;
+    
+}
+
+li {
+    height: 50px;
+    width:50px;
+    background-color: green;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid black;
+}
+
+li.water {
+    background: green;
+}
+
+li.waterRed {
+    background: red;
+}
+
+li.clicked {
+    background: blue;
+}

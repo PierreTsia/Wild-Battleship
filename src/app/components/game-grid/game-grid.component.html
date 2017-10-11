@@ -1,0 +1,11 @@
+<button (click)="resetGrid()" class="btn btn-primary">Init</button>
+<p>{{square}}</p>
+
+<div class="grid-block">
+  <ul id="{{x}}" *ngFor="let i of grille; let x = index">
+    <li *ngFor="let j of i; let y = index" (click)="onItemClicked(x, y)"
+    [ngClass]="getNgClass(j)">
+      {{j}}
+    </li>
+  </ul>
+</div>
