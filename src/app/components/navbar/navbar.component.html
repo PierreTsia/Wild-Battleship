@@ -3,7 +3,7 @@
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand">Navbar</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -13,9 +13,7 @@
       <li class="nav-item">
         <a class="nav-link" href="#" routerLink="/game">Game</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" routerLink="/auth">Authentication</a>
-      </li>
+      
     </ul >
 
 
@@ -25,7 +23,7 @@
         <img  src="{{(authService.user | async)?.photoURL}}" style="width:30px;height:30px;" class="avatar">
       </li>
       <li>
-        <button  (click)="logout()" routerLink="/auth" class="btn btn-danger">
+        <button  (click)="logout()" routerLink="/" class="btn btn-danger">
           <i class="fa fa-sign-out" aria-hidden="true"></i>
           <span>Log Out</span>
         </button>
@@ -33,9 +31,9 @@
     </ul>
 
     <ul *ngIf="!(authService.user | async)"class="nav navbar-nav navbar-right">
-      <li><div  href="#" routerLink="/auth" class="logSign"><i class="fa fa-sign-in" aria-hidden="true" ></i> <span> Log In</span></div></li>
+      <li><div  href="#" routerLink="/" class="logSign"><i class="fa fa-sign-in" aria-hidden="true" ></i> <span> Log In</span></div></li>
       
-      <li><div  href="#" routerLink="/auth" class="logSign"><i class="fa fa-user" aria-hidden="true"></i><span> Sign Up</span></div></li>
+      <li><div  href="#" routerLink="/" class="logSign"><i class="fa fa-user" aria-hidden="true"></i><span> Sign Up</span></div></li>
     </ul>
 
   </div>
