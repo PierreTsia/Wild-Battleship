@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../auth.service';
+import { Cell } from '../../models/cell'
 
 @Component({
   selector: 'app-game-grid',
@@ -13,42 +14,60 @@ export class GameGridComponent implements OnInit {
   @Input() onClickedItem: Function;
   @Input() firebaseDBPath: string;
 
-  getNgClass(j) {
+  getNgClass(cell) {
+    let ngClassObject = {
+      'clicked': cell.type == 'Clicked',
+      'boated': cell.type == 'boat'
+    };
+
     if (this.firebaseDBPath == "/grid1") {
-      return { 'water': j != 'Clicked', 'clicked': j == 'Clicked', 'boated': j == 'boat' };
+      ngClassObject["water"] = cell.type == "water"
+    } else if (this.firebaseDBPath == "/grid2") {
+      ngClassObject["waterRed"] = cell.type == "water"
     }
-    return { 'waterRed': j != 'Clicked', 'clicked': j == 'Clicked', 'boated': j == 'boat' };
+    return ngClassObject;
   }
 
+
+
+
+  //private grille : { type: string,  string }[]
+
   grilleVierge = [
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"]
+
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()]
+
   ];
 
 
   grille = [
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"],
-    ["water", "water", "water", "water", "water", "water", "water", "water", "water"]
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
+    [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()]
+
   ];
 
   isClicked: boolean = false;
   isGridFull = false;
 
-  boat = [[], [], []];
+
+  private idBoat: number;
+
+
 
 
 
@@ -58,7 +77,7 @@ export class GameGridComponent implements OnInit {
 
   ngOnInit() {
     this.db.object('room/' + this.firebaseDBPath).update(this.grille);
-    this.db.object('room/' + this.firebaseDBPath).valueChanges().subscribe((data: string[][]) => {
+    this.db.object('room/' + this.firebaseDBPath).valueChanges().subscribe((data: Cell[][]) => {
       console.log(data);
       this.grille = data;
     });
@@ -66,7 +85,7 @@ export class GameGridComponent implements OnInit {
 
   onItemClicked(x, y) {
     let tmpGrid = Object.assign({}, this.grille);
-    tmpGrid[y][x] = "Clicked";
+    Cell[y][x] = "Clicked";
     console.log(x);
     console.log(y);
     this.db.object('room/' + this.firebaseDBPath).update(tmpGrid);
@@ -82,12 +101,12 @@ export class GameGridComponent implements OnInit {
     this.isGridFull = false;
   }
 
-  isBoated(grid: string[][], x: number, y: number) {
-    return this.getCellValue(this.grille, x, y) == "boat";
+  isBoated(grid: Cell[][], x: number, y: number) {
+    return this.getCellValue(Cell[x][y].type, x, y) == "boat";
   }
 
-  getCellValue(grid: string[][], x: number, y: number) {
-    return grid[x][y];
+  getCellValue(grid: Cell[][], x: number, y: number) {
+    return grid[x][y].type;
   }
 
   generateDirection() {
@@ -105,7 +124,7 @@ export class GameGridComponent implements OnInit {
     }
   }
 
-  isBoatInGrid(grid: string[][], x: number, y: number, direction: string, size: number) {
+  isBoatInGrid(grid: Cell[][], x: number, y: number, direction: string, size: number) {
     switch (direction) {
       case "left":
         return x >= size - 1;
@@ -119,28 +138,28 @@ export class GameGridComponent implements OnInit {
     }
   }
 
-  collisionAvoided(grid: string[][], x: number, y: number, direction: string, size: number) {
+  collisionAvoided(grid: Cell[][], x: number, y: number, direction: string, size: number) {
     let i = 0;
     while (i < size) {
       switch (direction) {
         case "left":
-          if (grid[x - i][y] == "boat") {
+          if (grid[x - i][y].type == "boat") {
             return false;
           }
           break;
         case "up":
-          if (grid[x][y - i] == "boat") {
+          if (grid[x][y - i].type == "boat") {
             return false;
           }
           break;
         case "right":
-          if (grid[x + i][y] == "boat") {
+          if (grid[x + i][y].type == "boat") {
             return false;
           }
           break;
         case "down":
         default:
-          if (grid[x][y + i] == "boat") {
+          if (grid[x][y + i].type == "boat") {
             return false;
           }
           break;
@@ -150,32 +169,50 @@ export class GameGridComponent implements OnInit {
     return true;
   }
 
-  placeBoat(grid: string[][], x: number, y: number, direction: string, size: number) {
+  randomizeBoatId() {
+    this.idBoat = Math.floor(Math.random() * 1000)
+  }
+  placeBoat(grid: Cell[][], x: number, y: number, direction: string, size: number) {
     let i = 0;
+    this.randomizeBoatId();
+    console.log(this.idBoat)
     while (i < size) {
       switch (direction) {
         case "left":
-          grid[x - i][y] = "boat";
+       
+          grid[x - i][y].boatId = this.idBoat;
+          grid[x - i][y].type = "boat";
+
           break;
         case "up":
-          grid[x][y - i] = "boat";
+          
+          grid[x][y - i].boatId = this.idBoat;
+          grid[x][y - i].type = "boat";
+
           break;
         case "right":
-          grid[x + i][y] = "boat";
+          
+          grid[x + i][y].boatId = this.idBoat;
+          grid[x + i][y].type = "boat";
+
           break;
         case "down":
         default:
-          grid[x][y + i] = "boat";
+          
+          grid[x][y + i].boatId = this.idBoat;
+          grid[x][y + i].type = "boat";
+
           break;
       }
       i++;
+
     }
   }
 
   addShip(size: number) {
     let found = false;
     let i = 0;
-    while (!found && i<100) {
+    while (!found && i < 100) {
       let xpos = Math.floor(Math.random() * 9);
       let ypos = Math.floor(Math.random() * 9);
       let direction = this.generateDirection();
@@ -192,12 +229,14 @@ export class GameGridComponent implements OnInit {
   }
 
 
-  generatePlayerGrid(){
+  generatePlayerGrid() {
     this.addShip(5);
     this.addShip(4);
     this.addShip(3);
     this.addShip(3);
     this.addShip(2);
     this.isGridFull = true;
+
+
   }
 }

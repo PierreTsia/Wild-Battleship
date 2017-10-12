@@ -18,7 +18,6 @@ export class AuthService {
 
   }
 
-  /**/
 
   loggedIn = false;
   
@@ -34,11 +33,6 @@ export class AuthService {
       return promise;
     }
   
-  
-    
-  
-    /**/
-
   signup(userName: string, email: string, password: string, onError: (string) => void) {
     this.firebaseAuth
       .auth
