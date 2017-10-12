@@ -65,34 +65,27 @@ export class GameGridComponent implements OnInit {
   }
 
   onItemClicked(x, y) {
-
-
     let tmpGrid = Object.assign({}, this.grille);
-
     tmpGrid[y][x] = "Clicked";
     console.log(x);
     console.log(y);
-
     this.db.object('room/' + this.firebaseDBPath).update(tmpGrid);
     // let clickedSquare = tmpGrid[x][y];
-
     if (this.onClickedItem) {
       this.onClickedItem(x, y);
       console.log("this.firebaseDBPath:" + this.firebaseDBPath);
     }
-
-
   }
 
   resetGrid() {
     this.db.object('room/' + this.firebaseDBPath).update(this.grilleVierge);
     this.isGridFull = false;
-
   }
+
   isBoated(grid: string[][], x: number, y: number) {
     return this.getCellValue(this.grille, x, y) == "boat";
-
   }
+
   getCellValue(grid: string[][], x: number, y: number) {
     return grid[x][y];
   }
@@ -127,7 +120,6 @@ export class GameGridComponent implements OnInit {
   }
 
   collisionAvoided(grid: string[][], x: number, y: number, direction: string, size: number) {
-
     let i = 0;
     while (i < size) {
       switch (direction) {
@@ -153,15 +145,12 @@ export class GameGridComponent implements OnInit {
           }
           break;
       }
-
       i++;
     }
     return true;
   }
 
   placeBoat(grid: string[][], x: number, y: number, direction: string, size: number) {
-
-
     let i = 0;
     while (i < size) {
       switch (direction) {
@@ -178,9 +167,7 @@ export class GameGridComponent implements OnInit {
         default:
           grid[x][y + i] = "boat";
           break;
-
       }
-
       i++;
     }
   }
@@ -189,7 +176,6 @@ export class GameGridComponent implements OnInit {
     let found = false;
     let i = 0;
     while (!found && i<100) {
-
       let xpos = Math.floor(Math.random() * 9);
       let ypos = Math.floor(Math.random() * 9);
       let direction = this.generateDirection();
@@ -199,8 +185,6 @@ export class GameGridComponent implements OnInit {
         let tmpGrid = Object.assign({}, this.grille);
         this.placeBoat(tmpGrid, xpos, ypos, direction, size);
         this.db.object('room/' + this.firebaseDBPath).update(tmpGrid);
-
-
         found = true;
       }
       i++;
@@ -216,5 +200,4 @@ export class GameGridComponent implements OnInit {
     this.addShip(2);
     this.isGridFull = true;
   }
-
 }
