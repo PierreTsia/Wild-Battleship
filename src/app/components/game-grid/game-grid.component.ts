@@ -87,6 +87,7 @@ export class GameGridComponent implements OnInit {
 
   //on itemClicked(x,y)=> getCellValue de toutes les cases qui touchent => getCellValueOfNextCells(x,y) :string []
 
+  //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
   onHitCell(grid: Cell[][], x: number, y: number) {
     if (this.getCellValue(grid, x, y) == "boat") {
       return grid[x][y].type = "boatHit";
@@ -97,23 +98,20 @@ export class GameGridComponent implements OnInit {
 
 
   onItemClicked(x, y) {
+
+    //CLONE GRID TO BE SENT TO FIREBASE DB
     let tmpGrid = Object.assign({}, this.grille);
     console.log(this.getNextCellsBoatId(tmpGrid, x, y));
 
 
 
     //CHANGE CELL TYPE ON HIT
-
     this.onHitCell(tmpGrid, x, y);
 
-    /*  if (this.getCellValue(tmpGrid, x, y) == "boat") {
-          return tmpGrid[x][y].type = "boatHit";
-        } else if (this.getCellValue(tmpGrid, x, y) == "water") {
-          return tmpGrid[x][y].type = "waterHit";
-        }
-    */
+    //DETERMINE NEXT CELLS WITH SAME BOATID
+    this.getNextCellWithSameBoatId(tmpGrid, x, y,this.getNextCellsBoatId(tmpGrid,x,y) );
 
-    //UPDATE FIREBASE DB
+    //SEND UPDATED GRID TO FIREBASE DB
     this.db.object('room/' + this.firebaseDBPath).update(tmpGrid);
     if (this.onClickedItem) {
       this.onClickedItem(x, y);
@@ -121,9 +119,10 @@ export class GameGridComponent implements OnInit {
     }
   }
 
-  getNextCellsBoatId(grid: Cell[][], x: number, y: number): string[] {
+  getNextCellsBoatId(grid: Cell[][], x: number, y: number): number[] {
     let arr = [];
     if (x == 0 && y == 0) {
+
       arr.push(grid[x][y + 1].boatId);
       arr.push(grid[x + 1][y].boatId);
       return arr;
@@ -160,7 +159,18 @@ export class GameGridComponent implements OnInit {
     }
   }
 
-
+  getNextCellWithSameBoatId(grid: Cell[][], x: number, y: number, arr: number[]): number[] {
+    let i = 0;
+    let arrWithSameId = [];
+    while (i < arr.length) {
+      if (arr[i] != undefined && arr[i] == grid[x][y].boatId) { 
+        arrWithSameId.push(arr[i]);
+      }
+      i++;
+    }
+    console.log("sameID => "+arrWithSameId)
+    return arrWithSameId;
+  }
 
 
   resetGrid() {
