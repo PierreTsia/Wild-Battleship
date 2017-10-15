@@ -17,7 +17,9 @@ export class GameGridComponent implements OnInit {
   getNgClass(cell) {
     let ngClassObject = {
       'clicked': cell.type == 'Clicked',
-      'boated': cell.type == 'boat'
+      'boated': cell.type == 'boat',
+      'waterHitClass': cell.type == "waterHit",
+      'boatHitClass': cell.type == "boatHit"
     };
 
     if (this.firebaseDBPath == "/grid1") {
@@ -65,7 +67,8 @@ export class GameGridComponent implements OnInit {
   isGridFull = false;
 
 
-  private idBoat: number;
+  private idBoat: number = 0;
+
 
 
 
@@ -78,23 +81,87 @@ export class GameGridComponent implements OnInit {
   ngOnInit() {
     this.db.object('room/' + this.firebaseDBPath).update(this.grille);
     this.db.object('room/' + this.firebaseDBPath).valueChanges().subscribe((data: Cell[][]) => {
-      console.log(data);
       this.grille = data;
     });
   }
 
+  //on itemClicked(x,y)=> getCellValue de toutes les cases qui touchent => getCellValueOfNextCells(x,y) :string []
+
+  onHitCell(grid: Cell[][], x: number, y: number) {
+    if (this.getCellValue(grid, x, y) == "boat") {
+      return grid[x][y].type = "boatHit";
+    } else if (this.getCellValue(grid, x, y) == "water") {
+      return grid[x][y].type = "waterHit";
+    }
+  }
+
+
   onItemClicked(x, y) {
     let tmpGrid = Object.assign({}, this.grille);
-    Cell[y][x] = "Clicked";
-    console.log(x);
-    console.log(y);
+    console.log(this.getNextCellsBoatId(tmpGrid, x, y));
+
+
+
+    //CHANGE CELL TYPE ON HIT
+
+    this.onHitCell(tmpGrid, x, y);
+
+    /*  if (this.getCellValue(tmpGrid, x, y) == "boat") {
+          return tmpGrid[x][y].type = "boatHit";
+        } else if (this.getCellValue(tmpGrid, x, y) == "water") {
+          return tmpGrid[x][y].type = "waterHit";
+        }
+    */
+
+    //UPDATE FIREBASE DB
     this.db.object('room/' + this.firebaseDBPath).update(tmpGrid);
-    // let clickedSquare = tmpGrid[x][y];
     if (this.onClickedItem) {
       this.onClickedItem(x, y);
       console.log("this.firebaseDBPath:" + this.firebaseDBPath);
     }
   }
+
+  getNextCellsBoatId(grid: Cell[][], x: number, y: number): string[] {
+    let arr = [];
+    if (x == 0 && y == 0) {
+      arr.push(grid[x][y + 1].boatId);
+      arr.push(grid[x + 1][y].boatId);
+      return arr;
+    } else if (x == 0 && y > 0) {
+      arr.push(grid[x + 1][y].boatId);
+      arr.push(grid[x][y + 1].boatId);
+      arr.push(grid[x][y - 1].boatId);
+      return arr;
+    } else if (x > 0 && y == 0) {
+      arr.push(grid[x + 1][y].boatId);
+      arr.push(grid[x - 1][y].boatId);
+      arr.push(grid[x][y + 1].boatId);
+      return arr;
+    } else if (x == 8 && y == 8) {
+      arr.push(grid[x - 1][y].boatId);
+      arr.push(grid[x][y - 1].boatId);
+      return arr;
+    } else if (x == 8 && y < 8) {
+      arr.push(grid[x - 1][y].boatId);
+      arr.push(grid[x][y + 1].boatId);
+      arr.push(grid[x][y - 1].boatId);
+      return arr;
+    } else if (x < 8 && y == 8) {
+      arr.push(grid[x - 1][y].boatId);
+      arr.push(grid[x + 1][y].boatId);
+      arr.push(grid[x][y - 1].boatId);
+      return arr;
+    } else {
+      arr.push(grid[x - 1][y].boatId);
+      arr.push(grid[x + 1][y].boatId);
+      arr.push(grid[x][y + 1].boatId);
+      arr.push(grid[x][y - 1].boatId);
+      return arr;
+    }
+  }
+
+
+
 
   resetGrid() {
     this.db.object('room/' + this.firebaseDBPath).update(this.grilleVierge);
@@ -175,30 +242,30 @@ export class GameGridComponent implements OnInit {
   placeBoat(grid: Cell[][], x: number, y: number, direction: string, size: number) {
     let i = 0;
     this.randomizeBoatId();
-    console.log(this.idBoat)
+
     while (i < size) {
       switch (direction) {
         case "left":
-       
+
           grid[x - i][y].boatId = this.idBoat;
           grid[x - i][y].type = "boat";
 
           break;
         case "up":
-          
+
           grid[x][y - i].boatId = this.idBoat;
           grid[x][y - i].type = "boat";
 
           break;
         case "right":
-          
+
           grid[x + i][y].boatId = this.idBoat;
           grid[x + i][y].type = "boat";
 
           break;
         case "down":
         default:
-          
+
           grid[x][y + i].boatId = this.idBoat;
           grid[x][y + i].type = "boat";
 

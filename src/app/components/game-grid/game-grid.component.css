@@ -31,3 +31,11 @@ li.clicked {
 li.boated{
     background: grey;
 }
+
+li.waterHitClass{
+    background: orange;
+}
+
+li.boatHitClass{
+    background: purple;
+}
