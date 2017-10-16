@@ -109,6 +109,12 @@ export class GameGridComponent implements OnInit {
       this.sinkingShip(tmpGrid, x, y);
     }
 
+    //TELLS IF ALL SHIPS ARE SUNK
+
+    if (this.howManyBoatCells(tmpGrid) == 0){
+      alert("all ships sunk")
+    }
+
     //SEND UPDATED GRID TO FIREBASE DB
     this.db.object('room/' + this.firebaseDBPath).update(tmpGrid);
     if (this.onClickedItem) {
@@ -144,6 +150,21 @@ export class GameGridComponent implements OnInit {
     }
   }
 
+
+  // COUNT THE NUMBER OF CELLS WITH "BOAT" TYPE
+
+  howManyBoatCells (grid: Cell[][]){
+    let result = 0;
+    for (let i = 0; i < grid[0].length; i++) {
+      for (let j = 0; j < grid[0].length; j++) {
+        if (grid[i][j].type == "boat") {
+          result++;
+        }
+      }
+      return result;
+    }
+
+  }
   resetGrid() {
     this.db.object('room/' + this.firebaseDBPath).update(this.grilleVierge);
     this.isGridFull = false;
