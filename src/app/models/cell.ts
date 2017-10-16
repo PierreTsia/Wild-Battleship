@@ -5,6 +5,7 @@ export class Cell {
     public static newWaterCell(): Cell {
         let waterCell = new Cell();
         waterCell.type = "water";
+        waterCell.boatId = 0;
         return waterCell;
     }
 }

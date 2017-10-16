@@ -90,6 +90,8 @@ export class GameGridComponent implements OnInit {
   //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
   onHitCell(grid: Cell[][], x: number, y: number) {
     if (this.getCellValue(grid, x, y) == "boat") {
+      //   grid[x][y].boatId = grid[x][y].boatId - (2 * grid[x][y].boatId);
+      console.log("valeur negative quand touché : " + grid[x][y].boatId)
       return grid[x][y].type = "boatHit";
     } else if (this.getCellValue(grid, x, y) == "water") {
       return grid[x][y].type = "waterHit";
@@ -109,7 +111,13 @@ export class GameGridComponent implements OnInit {
     this.onHitCell(tmpGrid, x, y);
 
     //DETERMINE NEXT CELLS WITH SAME BOATID
-    this.getNextCellWithSameBoatId(tmpGrid, x, y,this.getNextCellsBoatId(tmpGrid,x,y) );
+    this.getNextCellWithSameBoatId(tmpGrid, x, y, this.getNextCellsBoatId(tmpGrid, x, y));
+
+    //LOOP THROUGH THE GRID AND COUNT THE CELLS WITH SAME ID AND TYPE BOAT
+
+    if (this.onScanGrid(tmpGrid, x, y) == 0) {
+      alert("bateau coulé");
+    } 
 
     //SEND UPDATED GRID TO FIREBASE DB
     this.db.object('room/' + this.firebaseDBPath).update(tmpGrid);
@@ -125,6 +133,14 @@ export class GameGridComponent implements OnInit {
 
       arr.push(grid[x][y + 1].boatId);
       arr.push(grid[x + 1][y].boatId);
+      return arr;
+    } else if (x == 8 && y == 0) {
+      arr.push(grid[x - 1][y].boatId);
+      arr.push(grid[x][y + 1].boatId);
+      return arr;
+    } else if (x == 0 && y == 8) {
+      arr.push(grid[x + 1][y].boatId);
+      arr.push(grid[x][y - 1].boatId);
       return arr;
     } else if (x == 0 && y > 0) {
       arr.push(grid[x + 1][y].boatId);
@@ -163,13 +179,30 @@ export class GameGridComponent implements OnInit {
     let i = 0;
     let arrWithSameId = [];
     while (i < arr.length) {
-      if (arr[i] != undefined && arr[i] == grid[x][y].boatId) { 
+      if (arr[i] != undefined && arr[i] == grid[x][y].boatId) {
         arrWithSameId.push(arr[i]);
       }
       i++;
     }
-    console.log("sameID => "+arrWithSameId)
+    console.log("sameID => " + arrWithSameId)
     return arrWithSameId;
+  }
+
+  //LOOP THROUGH THE GRID AND COUNT THE CELLS WITH SAME ID AND TYPE BOAT
+
+  onScanGrid(grid: Cell[][], x: number, y: number) {
+   let remainingCellUntouched = 0;
+    for (let i = 0; i < grid[0].length; i++) {
+      //loop premier niveau
+      for (let j = 0; j < grid[0].length; j++) {
+        if (grid[i][j].boatId == grid[x][y].boatId && grid[i][j].type == "boat"){
+         // console.log("trouvé bateau de meme ID :"+grid[i][j].boatId+ "aux coordonnées :"+i+" "+j)
+          remainingCellUntouched ++;
+        }
+
+      }
+    }
+    return remainingCellUntouched;
   }
 
 
