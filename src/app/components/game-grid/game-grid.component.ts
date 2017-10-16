@@ -77,7 +77,7 @@ export class GameGridComponent implements OnInit {
     });
   }
 
-  
+
   //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
   onHitCell(grid: Cell[][], x: number, y: number) {
     if (this.getCellValue(grid, x, y) == "boat") {
@@ -99,10 +99,10 @@ export class GameGridComponent implements OnInit {
     //CHANGE CELL TYPE ON HIT
     this.onHitCell(tmpGrid, x, y);
 
- 
+
     //LOOP THROUGH THE GRID AND COUNT THE CELLS WITH SAME ID AND TYPE BOAT
 
-    if (tmpGrid[x][y].boatId!= 0 && this.onScanGrid(tmpGrid, x, y) == 0) {
+    if (tmpGrid[x][y].boatId != 0 && this.onScanGrid(tmpGrid, x, y) == 0) {
 
       tmpGrid[x][y].type = "sunkShip";
       alert("bateau coulé ID:" + tmpGrid[x][y].boatId);
@@ -111,8 +111,8 @@ export class GameGridComponent implements OnInit {
 
     //TELLS IF ALL SHIPS ARE SUNK
 
-    if (this.howManyBoatCells(tmpGrid) == 0){
-      alert("all ships sunk")
+    if (this.howManySunkCells(tmpGrid)==17) {
+      alert("ALL SHIPS SUNK")
     }
 
     //SEND UPDATED GRID TO FIREBASE DB
@@ -128,9 +128,9 @@ export class GameGridComponent implements OnInit {
   onScanGrid(grid: Cell[][], x: number, y: number) {
     let remainingCellUntouched = 0;
     for (let i = 0; i < grid[0].length; i++) {
-          for (let j = 0; j < grid[0].length; j++) {
+      for (let j = 0; j < grid[0].length; j++) {
         if (grid[i][j].boatId == grid[x][y].boatId && grid[i][j].type == "boat") {
-           remainingCellUntouched++;
+          remainingCellUntouched++;
         }
       }
     }
@@ -151,19 +151,22 @@ export class GameGridComponent implements OnInit {
   }
 
 
-  // COUNT THE NUMBER OF CELLS WITH "BOAT" TYPE
+  // COUNT THE NUMBER OF CELLS WITH SHIPSUNK TYPE
 
-  howManyBoatCells (grid: Cell[][]){
-    let result = 0;
-    for (let i = 0; i < grid[0].length; i++) {
+ howManySunkCells(grid: Cell[][]) {
+    let result:number = 0;
+     for (let i = 0; i < grid[0].length; i++) {
       for (let j = 0; j < grid[0].length; j++) {
-        if (grid[i][j].type == "boat") {
-          result++;
+        if (grid[i][j].type == "shipSunk") {
+          result += 1;
+          
         }
       }
-      return result;
+      
+      
     }
-
+    console.log("nombre de cases coulées :"+result);
+    return result;
   }
   resetGrid() {
     this.db.object('room/' + this.firebaseDBPath).update(this.grilleVierge);
