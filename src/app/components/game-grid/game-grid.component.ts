@@ -33,9 +33,6 @@ export class GameGridComponent implements OnInit {
 
 
 
-
-  //private grille : { type: string,  string }[]
-
   grilleVierge = [
 
     [Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell(), Cell.newWaterCell()],
@@ -69,12 +66,6 @@ export class GameGridComponent implements OnInit {
 
 
   private idBoat: number = 0;
-
-
-
-
-
-
   constructor(private db: AngularFireDatabase) { }
 
 
@@ -86,8 +77,7 @@ export class GameGridComponent implements OnInit {
     });
   }
 
-  //on itemClicked(x,y)=> getCellValue de toutes les cases qui touchent => getCellValueOfNextCells(x,y) :string []
-
+  
   //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
   onHitCell(grid: Cell[][], x: number, y: number) {
     if (this.getCellValue(grid, x, y) == "boat") {
@@ -102,16 +92,14 @@ export class GameGridComponent implements OnInit {
 
     //CLONE GRID TO BE SENT TO FIREBASE DB
     let tmpGrid = Object.assign({}, this.grille);
-    console.log(this.getNextCellsBoatId(tmpGrid, x, y));
+
 
 
 
     //CHANGE CELL TYPE ON HIT
     this.onHitCell(tmpGrid, x, y);
 
-    //DETERMINE NEXT CELLS WITH SAME BOATID
-    this.getNextCellWithSameBoatId(tmpGrid, x, y, this.getNextCellsBoatId(tmpGrid, x, y));
-
+ 
     //LOOP THROUGH THE GRID AND COUNT THE CELLS WITH SAME ID AND TYPE BOAT
 
     if (tmpGrid[x][y].boatId!= 0 && this.onScanGrid(tmpGrid, x, y) == 0) {
@@ -129,77 +117,14 @@ export class GameGridComponent implements OnInit {
     }
   }
 
-  getNextCellsBoatId(grid: Cell[][], x: number, y: number): number[] {
-    let arr = [];
-    if (x == 0 && y == 0) {
-
-      arr.push(grid[x][y + 1].boatId);
-      arr.push(grid[x + 1][y].boatId);
-      return arr;
-    } else if (x == 8 && y == 0) {
-      arr.push(grid[x - 1][y].boatId);
-      arr.push(grid[x][y + 1].boatId);
-      return arr;
-    } else if (x == 0 && y == 8) {
-      arr.push(grid[x + 1][y].boatId);
-      arr.push(grid[x][y - 1].boatId);
-      return arr;
-    } else if (x == 0 && y > 0) {
-      arr.push(grid[x + 1][y].boatId);
-      arr.push(grid[x][y + 1].boatId);
-      arr.push(grid[x][y - 1].boatId);
-      return arr;
-    } else if (x > 0 && y == 0) {
-      arr.push(grid[x + 1][y].boatId);
-      arr.push(grid[x - 1][y].boatId);
-      arr.push(grid[x][y + 1].boatId);
-      return arr;
-    } else if (x == 8 && y == 8) {
-      arr.push(grid[x - 1][y].boatId);
-      arr.push(grid[x][y - 1].boatId);
-      return arr;
-    } else if (x == 8 && y < 8) {
-      arr.push(grid[x - 1][y].boatId);
-      arr.push(grid[x][y + 1].boatId);
-      arr.push(grid[x][y - 1].boatId);
-      return arr;
-    } else if (x < 8 && y == 8) {
-      arr.push(grid[x - 1][y].boatId);
-      arr.push(grid[x + 1][y].boatId);
-      arr.push(grid[x][y - 1].boatId);
-      return arr;
-    } else {
-      arr.push(grid[x - 1][y].boatId);
-      arr.push(grid[x + 1][y].boatId);
-      arr.push(grid[x][y + 1].boatId);
-      arr.push(grid[x][y - 1].boatId);
-      return arr;
-    }
-  }
-
-  getNextCellWithSameBoatId(grid: Cell[][], x: number, y: number, arr: number[]): number[] {
-    let i = 0;
-    let arrWithSameId = [];
-    while (i < arr.length) {
-      if (arr[i] != undefined && arr[i] == grid[x][y].boatId) {
-        arrWithSameId.push(arr[i]);
-      }
-      i++;
-    }
-    console.log("sameID => " + arrWithSameId)
-    return arrWithSameId;
-  }
-
   //LOOP THROUGH THE GRID AND COUNT THE CELLS WITH SAME ID AND TYPE BOAT
 
   onScanGrid(grid: Cell[][], x: number, y: number) {
     let remainingCellUntouched = 0;
     for (let i = 0; i < grid[0].length; i++) {
-      //loop premier niveau
-      for (let j = 0; j < grid[0].length; j++) {
+          for (let j = 0; j < grid[0].length; j++) {
         if (grid[i][j].boatId == grid[x][y].boatId && grid[i][j].type == "boat") {
-          // console.log("trouvé bateau de meme ID :"+grid[i][j].boatId+ "aux coordonnées :"+i+" "+j)
-          remainingCellUntouched++;
+           remainingCellUntouched++;
         }
       }
     }
