@@ -19,7 +19,8 @@ export class GameGridComponent implements OnInit {
       'clicked': cell.type == 'Clicked',
       'boated': cell.type == 'boat',
       'waterHitClass': cell.type == "waterHit",
-      'boatHitClass': cell.type == "boatHit"
+      'boatHitClass': cell.type == "boatHit",
+      'shipSunkClass': cell.type == "shipSunk"
     };
 
     if (this.firebaseDBPath == "/grid1") {
@@ -90,8 +91,6 @@ export class GameGridComponent implements OnInit {
   //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
   onHitCell(grid: Cell[][], x: number, y: number) {
     if (this.getCellValue(grid, x, y) == "boat") {
-      //   grid[x][y].boatId = grid[x][y].boatId - (2 * grid[x][y].boatId);
-      console.log("valeur negative quand touché : " + grid[x][y].boatId)
       return grid[x][y].type = "boatHit";
     } else if (this.getCellValue(grid, x, y) == "water") {
       return grid[x][y].type = "waterHit";
@@ -115,9 +114,12 @@ export class GameGridComponent implements OnInit {
 
     //LOOP THROUGH THE GRID AND COUNT THE CELLS WITH SAME ID AND TYPE BOAT
 
-    if (this.onScanGrid(tmpGrid, x, y) == 0) {
-      alert("bateau coulé");
-    } 
+    if (tmpGrid[x][y].boatId!= 0 && this.onScanGrid(tmpGrid, x, y) == 0) {
+
+      tmpGrid[x][y].type = "sunkShip";
+      alert("bateau coulé ID:" + tmpGrid[x][y].boatId);
+      this.sinkingShip(tmpGrid, x, y);
+    }
 
     //SEND UPDATED GRID TO FIREBASE DB
     this.db.object('room/' + this.firebaseDBPath).update(tmpGrid);
@@ -191,20 +193,31 @@ export class GameGridComponent implements OnInit {
   //LOOP THROUGH THE GRID AND COUNT THE CELLS WITH SAME ID AND TYPE BOAT
 
   onScanGrid(grid: Cell[][], x: number, y: number) {
-   let remainingCellUntouched = 0;
+    let remainingCellUntouched = 0;
     for (let i = 0; i < grid[0].length; i++) {
       //loop premier niveau
       for (let j = 0; j < grid[0].length; j++) {
-        if (grid[i][j].boatId == grid[x][y].boatId && grid[i][j].type == "boat"){
-         // console.log("trouvé bateau de meme ID :"+grid[i][j].boatId+ "aux coordonnées :"+i+" "+j)
-          remainingCellUntouched ++;
+        if (grid[i][j].boatId == grid[x][y].boatId && grid[i][j].type == "boat") {
+          // console.log("trouvé bateau de meme ID :"+grid[i][j].boatId+ "aux coordonnées :"+i+" "+j)
+          remainingCellUntouched++;
         }
-
       }
     }
     return remainingCellUntouched;
   }
 
+  //LOOP THROUGH THE GRID CHANGE TYPE OF CELLS WITH SAME ID
+
+  sinkingShip(grid: Cell[][], x: number, y: number) {
+    for (let i = 0; i < grid[0].length; i++) {
+      for (let j = 0; j < grid[0].length; j++) {
+        if (grid[x][y].boatId > 0 && grid[i][j].boatId == grid[x][y].boatId) {
+          grid[i][j].type = "shipSunk";
+        }
+      }
+
+    }
+  }
 
   resetGrid() {
     this.db.object('room/' + this.firebaseDBPath).update(this.grilleVierge);

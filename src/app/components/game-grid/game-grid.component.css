@@ -39,3 +39,6 @@ li.waterHitClass{
 li.boatHitClass{
     background: purple;
 }
+li.shipSunkClass{
+    background: black;
+}
