@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router,Routes } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../auth.service';
 import { AuthenticationComponent } from '../components/authentication/authentication.component';
-import {Routes} from '@angular/router';
+
 
 @Injectable() 
 export class AuthGuard implements CanActivate {
@@ -20,7 +20,7 @@ constructor( private authService: AuthService, private router: Router ) {}
           if (authenticated){
             return true;
           } else {
-            this.router.navigate(['/']);
+            this.router.navigate(['/auth']);
           }
         }
       );

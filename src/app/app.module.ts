@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 
 import { AuthService } from './auth.service';
+import { GameService } from './game.service';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -43,6 +44,7 @@ import {GameGridComponent} from './components/game-grid/game-grid.component'
   ],
   providers: [
     AuthService,
+    GameService,
     AngularFireDatabase,
     AuthGuard,
   ],

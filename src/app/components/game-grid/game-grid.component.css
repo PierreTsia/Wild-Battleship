@@ -24,6 +24,10 @@ li.waterRed {
     background: red;
 }
 
+li.opponentBoat {
+    background: red;
+}
+
 li.clicked {
     background: blue;
 }

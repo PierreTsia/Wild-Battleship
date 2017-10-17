@@ -2,7 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../auth.service';
+import { GameService } from '../../game.service';
 import { Cell } from '../../models/cell'
+
 
 @Component({
   selector: 'app-game-grid',
@@ -11,27 +13,7 @@ import { Cell } from '../../models/cell'
 })
 export class GameGridComponent implements OnInit {
 
-  @Input() onClickedItem: Function;
-  @Input() firebaseDBPath: string;
-
-  getNgClass(cell) {
-    let ngClassObject = {
-      'clicked': cell.type == 'Clicked',
-      'boated': cell.type == 'boat',
-      'waterHitClass': cell.type == "waterHit",
-      'boatHitClass': cell.type == "boatHit",
-      'shipSunkClass': cell.type == "shipSunk"
-    };
-
-    if (this.firebaseDBPath == "/grid1") {
-      ngClassObject["water"] = cell.type == "water"
-    } else if (this.firebaseDBPath == "/grid2") {
-      ngClassObject["waterRed"] = cell.type == "water"
-    }
-    return ngClassObject;
-  }
-
-
+  @Input() gridNumber: number;
 
   grilleVierge = [
 
@@ -66,110 +48,47 @@ export class GameGridComponent implements OnInit {
 
 
   private idBoat: number = 0;
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase, public authService: AuthService, public gameService: GameService) { }
 
 
+  getNgClass(cell) {
+    let ngClassObject = {
+      'clicked': cell.type == 'Clicked',
+      'waterHitClass': cell.type == "waterHit",
+      'boatHitClass': cell.type == "boatHit",
+      'shipSunkClass': cell.type == "shipSunk"
+    };
+
+    if ((this.gameService.playerNumber == 1 && this.gridNumber == 1) ||
+      (this.gameService.playerNumber == 2 && this.gridNumber == 2)) {
+      // MY GRID
+      ngClassObject["water"] = cell.type == "water";
+      ngClassObject["boated"] = cell.type == "boat";
+    } else { // OPPONENT GRID
+      ngClassObject["waterRed"] = cell.type == "water";
+      ngClassObject["opponentBoat"] = cell.type == "boat";
+    }
+
+    return ngClassObject;
+  }
+
+  getFirebaseDBPath() {
+    return "/grid" + this.gridNumber;
+  }
 
   ngOnInit() {
-    this.db.object('room/' + this.firebaseDBPath).update(this.grille);
-    this.db.object('room/' + this.firebaseDBPath).valueChanges().subscribe((data: Cell[][]) => {
+    this.db.object('room/' + this.getFirebaseDBPath()).update(this.grille);
+    this.db.object('room/' + this.getFirebaseDBPath()).valueChanges().subscribe((data: Cell[][]) => {
       this.grille = data;
     });
   }
 
-
-  //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
-  onHitCell(grid: Cell[][], x: number, y: number) {
-    if (this.getCellValue(grid, x, y) == "boat") {
-      return grid[x][y].type = "boatHit";
-    } else if (this.getCellValue(grid, x, y) == "water") {
-      return grid[x][y].type = "waterHit";
-    }
-  }
-
-
   onItemClicked(x, y) {
-
-    //CLONE GRID TO BE SENT TO FIREBASE DB
-    let tmpGrid = Object.assign({}, this.grille);
-
-
-
-
-    //CHANGE CELL TYPE ON HIT
-    this.onHitCell(tmpGrid, x, y);
-
-
-    //LOOP THROUGH THE GRID AND COUNT THE CELLS WITH SAME ID AND TYPE BOAT
-
-    if (tmpGrid[x][y].boatId != 0 && this.onScanGrid(tmpGrid, x, y) == 0) {
-
-      tmpGrid[x][y].type = "sunkShip";
-      alert("bateau coulé ID:" + tmpGrid[x][y].boatId);
-      this.sinkingShip(tmpGrid, x, y);
-    }
-
-    //TELLS IF ALL SHIPS ARE SUNK
-
-    if (this.howManySunkCells(tmpGrid)==17) {
-      alert("ALL SHIPS SUNK")
-    }
-
-    //SEND UPDATED GRID TO FIREBASE DB
-    this.db.object('room/' + this.firebaseDBPath).update(tmpGrid);
-    if (this.onClickedItem) {
-      this.onClickedItem(x, y);
-      console.log("this.firebaseDBPath:" + this.firebaseDBPath);
-    }
+    this.gameService.clicked(this.grille, x, y, this.gridNumber);
   }
 
-  //LOOP THROUGH THE GRID AND COUNT THE CELLS WITH SAME ID AND TYPE BOAT
-
-  onScanGrid(grid: Cell[][], x: number, y: number) {
-    let remainingCellUntouched = 0;
-    for (let i = 0; i < grid[0].length; i++) {
-      for (let j = 0; j < grid[0].length; j++) {
-        if (grid[i][j].boatId == grid[x][y].boatId && grid[i][j].type == "boat") {
-          remainingCellUntouched++;
-        }
-      }
-    }
-    return remainingCellUntouched;
-  }
-
-  //LOOP THROUGH THE GRID CHANGE TYPE OF CELLS WITH SAME ID
-
-  sinkingShip(grid: Cell[][], x: number, y: number) {
-    for (let i = 0; i < grid[0].length; i++) {
-      for (let j = 0; j < grid[0].length; j++) {
-        if (grid[x][y].boatId > 0 && grid[i][j].boatId == grid[x][y].boatId) {
-          grid[i][j].type = "shipSunk";
-        }
-      }
-
-    }
-  }
-
-
-  // COUNT THE NUMBER OF CELLS WITH SHIPSUNK TYPE
-
- howManySunkCells(grid: Cell[][]) {
-    let result:number = 0;
-     for (let i = 0; i < grid[0].length; i++) {
-      for (let j = 0; j < grid[0].length; j++) {
-        if (grid[i][j].type == "shipSunk") {
-          result += 1;
-          
-        }
-      }
-      
-      
-    }
-    console.log("nombre de cases coulées :"+result);
-    return result;
-  }
   resetGrid() {
-    this.db.object('room/' + this.firebaseDBPath).update(this.grilleVierge);
+    this.db.object('room/' + this.getFirebaseDBPath()).update(this.grilleVierge);
     this.isGridFull = false;
   }
 
@@ -293,7 +212,7 @@ export class GameGridComponent implements OnInit {
         this.collisionAvoided(this.grille, xpos, ypos, direction, size)) {
         let tmpGrid = Object.assign({}, this.grille);
         this.placeBoat(tmpGrid, xpos, ypos, direction, size);
-        this.db.object('room/' + this.firebaseDBPath).update(tmpGrid);
+        this.db.object('room/' + this.getFirebaseDBPath()).update(tmpGrid);
         found = true;
       }
       i++;
