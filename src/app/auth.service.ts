@@ -4,6 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
@@ -20,19 +21,19 @@ export class AuthService {
 
 
   loggedIn = false;
-  
-    isAuthenticated() {
-      const promise = new Promise(
-        (resolve, reject) => {
-          setTimeout(() => {
-            resolve(this.loggedIn)
-          }, 800);
-  
-        }
-      );
-      return promise;
-    }
-  
+
+  isAuthenticated() {
+    const promise = new Promise(
+      (resolve, reject) => {
+        setTimeout(() => {
+          resolve(this.loggedIn)
+        }, 800);
+
+      }
+    );
+    return promise;
+  }
+
   signup(displayName: string, email: string, password: string, onError: (string) => void) {
     this.firebaseAuth
       .auth
@@ -65,6 +66,7 @@ export class AuthService {
   logout() {
     this.firebaseAuth.auth.signOut();
     this.loggedIn = false;
+    this.disconnectPlayer(this.currentUserId);
   }
 
   facebookLogin() {
@@ -74,6 +76,7 @@ export class AuthService {
   googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider()
     return this.socialSignIn(provider);
+
   }
 
   private socialSignIn(provider) {
@@ -82,6 +85,8 @@ export class AuthService {
         this.authState = credential.user;
         this.updateUserData(this.authState.displayName);
         this.loggedIn = true;
+        this.playerNumber(this.currentUserId);
+        this.disconnectPlayer(this.currentUserId)
       })
       .catch(error => console.log(error));
   }
@@ -110,5 +115,62 @@ export class AuthService {
       .subscribe((toto) => {
         console.log(toto);
       });
+  }
+  //room pour stocker player//
+  private playerNumber(userName: string): void {
+    let numPlayer = Math.floor(Math.random() * 2)
+    console.log(numPlayer);
+    if (numPlayer == 1 && this.loggedIn != false) {
+      let path = "room/players/player1/" + this.currentUserId;
+      let data = {
+        email: this.authState.email,
+        name: userName,
+      }
+      this.db.object(path)
+        .update(data)
+        .catch(error => console.log(error));
+      this.db.object(path)
+        .valueChanges()
+        .subscribe((toto) => {
+          console.log(toto);
+        });
+    }
+    if (numPlayer == 0 && this.loggedIn != false) {
+      let path = "room/players/player2/" + this.currentUserId;
+      let data = {
+        email: this.authState.email,
+        name: userName,
+      }
+      this.db.object(path)
+        .update(data)
+      this.db.object(path)
+        .valueChanges()
+        .subscribe((toto) => {
+          console.log(toto);
+        });
+    }
+
+  }
+  //verifier la presence du joueur 1 ou joueur 2
+  private disconnectPlayer(currentUserId: string) {
+    if (this.loggedIn == false) {
+      this.db.object("room/players/player1").valueChanges().take(1).subscribe((player) => {
+        console.log(player);
+        if (player && player[currentUserId]) {
+          console.log("je suis le joueur 1")
+          this.db.object("room/players/player1").remove();
+        }
+      });
+      this.db.object("room/players/player2").valueChanges().take(1).subscribe((player) => {
+        console.log(player);
+        if (player && player[currentUserId]) {
+          console.log("je suis le joueur 2")
+          this.db.object("room/players/player2").remove();
+
+        }
+      });
+    }
+
+
   }
 }
