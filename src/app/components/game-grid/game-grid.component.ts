@@ -230,4 +230,10 @@ export class GameGridComponent implements OnInit {
 
 
   }
+
+  generateMessage(string){
+    return "My message is "+string;
+  }
+
 }
+

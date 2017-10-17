@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-
+import { GameComponent } from './components/game/game.component'
 import { Cell } from './models/cell';
+import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
@@ -9,9 +10,13 @@ export class GameService {
 
   playerNumber: number;
 
+  public message = ["Bateau touché", "Bateau coulé", "Tous les bateaux coulés"];
+  public eventObserver: Observable<{}>;
+
   constructor(private db: AngularFireDatabase) {
 
     this.playerNumber = 1;
+    this.eventObserver= db.object('room/event').valueChanges();
   }
 
   isMyGrid(gridNumber: number) {
@@ -20,11 +25,11 @@ export class GameService {
   }
 
   clicked(grille: Cell[][], x: number, y: number, gridNumber: number) {
-    if (!this.isMyGrid(gridNumber)) {
+    if (this.isMyGrid(gridNumber)) {
       return;
     }
 
-    console.log("Ma grille : " + x + ", " + y);
+    console.log("Opponent grille : " + x + ", " + y);
 
     //CLONE GRID TO BE SENT TO FIREBASE DB
     let tmpGrid = Object.assign({}, grille);
@@ -38,14 +43,16 @@ export class GameService {
     if (tmpGrid[x][y].boatId != 0 && this.onScanGrid(tmpGrid, x, y) == 0) {
 
       tmpGrid[x][y].type = "sunkShip";
-      alert("bateau coulé ID:" + tmpGrid[x][y].boatId);
+      this.db.object('room/event')
+      .set(this.message[1]);
       this.sinkingShip(tmpGrid, x, y);
     }
 
     //TELLS IF ALL SHIPS ARE SUNK
 
     if (this.howManySunkCells(tmpGrid) == 17) {
-      alert("ALL SHIPS SUNK")
+      this.db.object('room/event')
+      .set(this.message[2]);
     }
 
     //SEND UPDATED GRID TO FIREBASE DB
@@ -60,7 +67,11 @@ export class GameService {
   //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
   onHitCell(grid: Cell[][], x: number, y: number) {
     if (this.getCellValue(grid, x, y) == "boat") {
+      this.db.object('room/event')
+      .set(this.message[0]);
       return grid[x][y].type = "boatHit";
+
+
     } else if (this.getCellValue(grid, x, y) == "water") {
       return grid[x][y].type = "waterHit";
     }
@@ -116,4 +127,6 @@ export class GameService {
     return result;
   }
 
+  
+ 
 }

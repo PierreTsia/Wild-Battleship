@@ -4,13 +4,10 @@
 <div class="grid-block">
   <ul id="{{x}}" *ngFor="let col of grille; let x = index">
     <li *ngFor="let cell of col; let y = index" (click)="onItemClicked(x, y)" [ngClass]="getNgClass(cell)">
-      {{cell.type}}
+      
     </li>
   </ul>
 </div>
-<hr>
-<div class="container">
-  <div class="row">
-    <span class="loggedInText">Logged in as  {{ (authService.user | async)?.displayName }}</span>
-  </div>
-</div>
+
+
+

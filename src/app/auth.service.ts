@@ -33,13 +33,13 @@ export class AuthService {
       return promise;
     }
   
-  signup(userName: string, email: string, password: string, onError: (string) => void) {
+  signup(displayName: string, email: string, password: string, onError: (string) => void) {
     this.firebaseAuth
       .auth
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
         this.authState = user;
-        this.updateUserData(userName);
+        this.updateUserData(displayName);
       })
       .catch(err => {
         console.log('Something went wrong:', err.message);
