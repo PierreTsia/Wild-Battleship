@@ -11,7 +11,7 @@ export class GameService {
   //realPlayer ;
   playerNumber: number;
 
-  public message = ["Bateau touché", "Bateau coulé", "Tous les bateaux coulés"];
+  public message = ["Bateau touché", "Bateau coulé", "Tous les bateaux coulés", ""];
   public eventObserver: Observable<{}>;
 
   constructor(private db: AngularFireDatabase) {

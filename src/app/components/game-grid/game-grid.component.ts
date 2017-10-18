@@ -80,6 +80,7 @@ export class GameGridComponent implements OnInit {
     this.db.object('room/' + this.getFirebaseDBPath()).update(this.grille);
     this.db.object('room/' + this.getFirebaseDBPath()).valueChanges().subscribe((data: Cell[][]) => {
       this.grille = data;
+      
     });
   }
 

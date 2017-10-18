@@ -28,6 +28,8 @@ export class GameComponent implements OnInit {
     this.gameService.checkMyUserNumber(this.authService.user).subscribe((playerNumber) => {
       console.log(playerNumber);
     });
+    this.db.object('room/event')
+    .set(this.gameService.message[3]);
   }
 
   /* updateMessage() {
