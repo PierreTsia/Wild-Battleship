@@ -16,7 +16,7 @@ export class GameService {
 
   constructor(private db: AngularFireDatabase, private authService: AuthService ) {
 
-    this.playerNumber = 1;
+    this.playerNumber = 2;
     this.eventObserver= db.object('room/event').valueChanges();
   }
 
@@ -27,7 +27,7 @@ export class GameService {
 
   clicked(grille: Cell[][], x: number, y: number, gridNumber: number) {
     if (this.isMyGrid(gridNumber)) {
-      console.log("hummmm???"+this.authService.authState.displayName)
+      //console.log("hummmm???"+this.authService.authState.displayName)
       return;
       
     }
