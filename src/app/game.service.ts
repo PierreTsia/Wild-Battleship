@@ -3,6 +3,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { GameComponent } from './components/game/game.component'
 import { Cell } from './models/cell';
 import { Observable } from 'rxjs/Observable';
+import * as firebase from 'firebase/app';
 
 
 @Injectable()
@@ -14,9 +15,7 @@ export class GameService {
   public eventObserver: Observable<{}>;
 
   constructor(private db: AngularFireDatabase) {
-
-    this.playerNumber = 1;
-    this.eventObserver= db.object('room/event').valueChanges();
+    this.eventObserver = db.object('room/event').valueChanges();
   }
 
   isMyGrid(gridNumber: number) {
@@ -44,7 +43,7 @@ export class GameService {
 
       tmpGrid[x][y].type = "sunkShip";
       this.db.object('room/event')
-      .set(this.message[1]);
+        .set(this.message[1]);
       this.sinkingShip(tmpGrid, x, y);
     }
 
@@ -52,7 +51,7 @@ export class GameService {
 
     if (this.howManySunkCells(tmpGrid) == 17) {
       this.db.object('room/event')
-      .set(this.message[2]);
+        .set(this.message[2]);
     }
 
     //SEND UPDATED GRID TO FIREBASE DB
@@ -68,7 +67,7 @@ export class GameService {
   onHitCell(grid: Cell[][], x: number, y: number) {
     if (this.getCellValue(grid, x, y) == "boat") {
       this.db.object('room/event')
-      .set(this.message[0]);
+        .set(this.message[0]);
       return grid[x][y].type = "boatHit";
 
 
@@ -127,6 +126,34 @@ export class GameService {
     return result;
   }
 
-  
- 
+
+  checkMyUserNumber(userObs: Observable<firebase.User>) {
+
+    let userIdObs = userObs.map((user) => {
+      return user.uid;
+    });
+
+    let playersObs = this.db.object("/room/players")
+      .valueChanges()
+      .take(1)
+      .do((players) => {
+        console.log(players);
+      })
+
+    return Observable.combineLatest(userIdObs, playersObs, (userId, players: { player1: string, player2: string }) => {
+      
+      console.log("playerId: " + userId);
+      console.log(players);
+      
+      if (players.player1 == userId) {
+        console.log("OK");
+        return 1;
+      } else {
+        console.log("KO");
+        return 2;
+      }
+    }).do((playerNumber) => {
+      this.playerNumber = playerNumber;
+    });
+  }
 }

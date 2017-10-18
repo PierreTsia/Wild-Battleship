@@ -85,7 +85,7 @@ export class AuthService {
         this.authState = credential.user;
         this.updateUserData(this.authState.displayName);
         this.loggedIn = true;
-        this.playerNumber(this.currentUserId);
+        this.addInRoom(this.currentUserId);
         this.disconnectPlayer(this.currentUserId)
       })
       .catch(error => console.log(error));
@@ -105,6 +105,7 @@ export class AuthService {
     let data = {
       email: this.authState.email,
       name: userName,
+      online: true,
     }
     this.db.object(path)
       .update(data)
@@ -116,40 +117,15 @@ export class AuthService {
         console.log(toto);
       });
   }
-  //room pour stocker player//
-  private playerNumber(userName: string): void {
-    let numPlayer = Math.floor(Math.random() * 2)
-    console.log(numPlayer);
-    if (numPlayer == 1 && this.loggedIn != false) {
-      let path = "room/players/player1/" + this.currentUserId;
-      let data = {
-        email: this.authState.email,
-        name: userName,
-      }
-      this.db.object(path)
-        .update(data)
-        .catch(error => console.log(error));
-      this.db.object(path)
-        .valueChanges()
-        .subscribe((toto) => {
-          console.log(toto);
-        });
-    }
-    if (numPlayer == 0 && this.loggedIn != false) {
-      let path = "room/players/player2/" + this.currentUserId;
-      let data = {
-        email: this.authState.email,
-        name: userName,
-      }
-      this.db.object(path)
-        .update(data)
-      this.db.object(path)
-        .valueChanges()
-        .subscribe((toto) => {
-          console.log(toto);
-        });
-    }
 
+  //room pour stocker player//
+  private addInRoom(userId): void {
+    if (!this.loggedIn) {
+      return;
+    }
+    let numPlayer = Math.floor(Math.random() * 2) + 1;
+    let path = numPlayer == 1 ? "room/players/player1" : "room/players/player2";
+    this.db.object(path).set(this.currentUserId);
   }
   //verifier la presence du joueur 1 ou joueur 2
   private disconnectPlayer(currentUserId: string) {
