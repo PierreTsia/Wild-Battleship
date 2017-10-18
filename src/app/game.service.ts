@@ -13,6 +13,7 @@ export class GameService {
 
   public message = ["Bateau touché", "Bateau coulé", "Tous les bateaux coulés", ""];
   public eventObserver: Observable<{}>;
+  private myTurn:boolean = true;
 
   constructor(private db: AngularFireDatabase) {
     this.eventObserver = db.object('room/event').valueChanges();
@@ -67,7 +68,7 @@ export class GameService {
 
   //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
   onHitCell(grid: Cell[][], x: number, y: number) {
-    console.log("I am player n° "+this.playerNumber) // ICI DEFINIR FIN DE TOUR
+    this.myTurn=false;
     if (this.getCellValue(grid, x, y) == "boat") {
       this.db.object('room/event')
         .set(this.message[0]);

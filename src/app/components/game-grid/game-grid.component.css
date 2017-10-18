@@ -46,3 +46,11 @@ li.boatHitClass{
 li.shipSunkClass{
     background: black;
 }
+
+.blockingDiv{
+    width:500px;
+    height: 500px;
+   background: rgba(255, 192, 204, 0.3);
+    position: absolute;
+    top:0px;
+}
