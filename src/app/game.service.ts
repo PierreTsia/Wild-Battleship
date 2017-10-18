@@ -3,17 +3,18 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { GameComponent } from './components/game/game.component'
 import { Cell } from './models/cell';
 import { Observable } from 'rxjs/Observable';
+import { AuthService } from './auth.service';
 
 
 @Injectable()
 export class GameService {
-
+  //realPlayer ;
   playerNumber: number;
 
   public message = ["Bateau touché", "Bateau coulé", "Tous les bateaux coulés"];
   public eventObserver: Observable<{}>;
 
-  constructor(private db: AngularFireDatabase) {
+  constructor(private db: AngularFireDatabase, private authService: AuthService ) {
 
     this.playerNumber = 1;
     this.eventObserver= db.object('room/event').valueChanges();
@@ -26,7 +27,9 @@ export class GameService {
 
   clicked(grille: Cell[][], x: number, y: number, gridNumber: number) {
     if (this.isMyGrid(gridNumber)) {
+      console.log("hummmm???"+this.authService.authState.displayName)
       return;
+      
     }
 
     console.log("Opponent grille : " + x + ", " + y);
