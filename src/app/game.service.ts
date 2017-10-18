@@ -8,7 +8,7 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class GameService {
-
+  //realPlayer ;
   playerNumber: number;
 
   public message = ["Bateau touché", "Bateau coulé", "Tous les bateaux coulés"];
@@ -25,7 +25,9 @@ export class GameService {
 
   clicked(grille: Cell[][], x: number, y: number, gridNumber: number) {
     if (this.isMyGrid(gridNumber)) {
+      //console.log("hummmm???"+this.authService.authState.displayName)
       return;
+      
     }
 
     console.log("Opponent grille : " + x + ", " + y);
