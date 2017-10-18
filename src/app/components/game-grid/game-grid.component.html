@@ -7,11 +7,15 @@
       
     </li>
   </ul>
-  <div *ngIf = "!gameService.myTurn" class="blockingDiv">
-      
-    </div>
+  <div  *ngIf="(turnStatus == 1 && gameService.playerNumber == 2)
+  || (turnStatus == 2 && gameService.playerNumber == 1)"
+  class="blockThePlayer"></div>
 </div>
+<hr>
+<div  *ngIf="(turnStatus == 1 && gameService.playerNumber == 2)
+ || (turnStatus == 2 && gameService.playerNumber == 1)"
+ class="blockThePlayer"></div>
 
-
-
+<span *ngIf="(turnStatus == 1 && gameService.playerNumber == 2)
+|| (turnStatus == 2 && gameService.playerNumber == 1)">turn : {{turnStatus}}</span>
 

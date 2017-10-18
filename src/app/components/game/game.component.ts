@@ -15,6 +15,7 @@ import { GameService } from '../../game.service';
 
 export class GameComponent implements OnInit {
   public eventStatus;
+  
 
   constructor(private db: AngularFireDatabase, public authService: AuthService, public gameService: GameService) {
 
@@ -22,19 +23,19 @@ export class GameComponent implements OnInit {
 
 
   ngOnInit() {
+   
     this.gameService.eventObserver.subscribe((event) => {
       this.eventStatus = event;
+      console.log("event : "+event)
     });
     this.gameService.checkMyUserNumber(this.authService.user).subscribe((playerNumber) => {
-      console.log(playerNumber);
+      
     });
     this.db.object('room/event')
     .set(this.gameService.message[3]);
+   
   }
 
-  /* updateMessage() {
-     this.db.object('room/event')
-       .update(this.message)
- 
-   }*/
+  
+  
 }

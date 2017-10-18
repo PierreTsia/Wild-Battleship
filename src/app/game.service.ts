@@ -13,10 +13,23 @@ export class GameService {
 
   public message = ["Bateau touché", "Bateau coulé", "Tous les bateaux coulés", ""];
   public eventObserver: Observable<{}>;
-  private myTurn:boolean = true;
+  public turnObserver: Observable <any>;
+//  private myTurn:boolean = true;
 
   constructor(private db: AngularFireDatabase) {
     this.eventObserver = db.object('room/event').valueChanges();
+    this.turnObserver = db.object('room/turn').valueChanges();
+  }
+
+  changeTurn(player: number){
+    if (player == 1){
+      this.db.object('room/turn')
+      .set(2);
+    } else {
+      this.db.object('room/turn')
+      .set(1);
+      
+    }
   }
 
   isMyGrid(gridNumber: number) {
@@ -31,14 +44,17 @@ export class GameService {
       
     }
 
-    console.log("Opponent grille : " + x + ", " + y);
+  
 
     //CLONE GRID TO BE SENT TO FIREBASE DB
     let tmpGrid = Object.assign({}, grille);
 
     //CHANGE CELL TYPE ON HIT
     this.onHitCell(tmpGrid, x, y);
+    
 
+    //CHANGE TURN NODE ON FB
+    this.changeTurn(this.playerNumber);
 
     //LOOP THROUGH THE GRID AND COUNT THE CELLS WITH SAME ID AND TYPE BOAT
 
@@ -68,7 +84,7 @@ export class GameService {
 
   //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
   onHitCell(grid: Cell[][], x: number, y: number) {
-    this.myTurn=false;
+   
     if (this.getCellValue(grid, x, y) == "boat") {
       this.db.object('room/event')
         .set(this.message[0]);

@@ -1,56 +1,54 @@
-
 ul {
-    display: inline-block;
-    margin:0;
-    padding: 0;
-    
+  display: inline-block;
+  margin: 0;
+  padding: 0;
 }
 
 li {
-    height: 50px;
-    width:50px;
-    background-color: green;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    border: 1px solid black;
+  height: 50px;
+  width: 50px;
+  background-color: green;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid black;
 }
 
 li.water {
-    background: green;
+  background: green;
 }
 
 li.waterRed {
-    background: red;
+  background: red;
 }
 
 li.opponentBoat {
-    background: red;
+  background: red;
 }
 
 li.clicked {
-    background: blue;
+  background: blue;
 }
 
-li.boated{
-    background: grey;
+li.boated {
+  background: grey;
 }
 
-li.waterHitClass{
-    background: orange;
+li.waterHitClass {
+  background: orange;
 }
 
-li.boatHitClass{
-    background: purple;
-}
-li.shipSunkClass{
-    background: black;
+li.boatHitClass {
+  background: purple;
 }
 
-.blockingDiv{
-    width:500px;
-    height: 500px;
-   background: rgba(255, 192, 204, 0.3);
-    position: absolute;
-    top:0px;
+li.shipSunkClass {
+  background: black;
+}
+
+.blockThePlayer {
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  top: 0px;
 }
