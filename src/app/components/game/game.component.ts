@@ -7,10 +7,16 @@ import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../auth.service';
 import { GameService } from '../../game.service';
 
+/*animation import*/ import { slideInOutAnimation } from '../../animations/index';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  styleUrls: ['./game.component.css'],
+  // make slide in out animation available to this component
+  animations: [slideInOutAnimation],
+  
+     // attach the slide in out animation to the host (root) element of this component
+     host: { '[@slideInOutAnimation]': '' }
 })
 
 export class GameComponent implements OnInit {

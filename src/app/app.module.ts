@@ -20,7 +20,7 @@ import { appRoutes } from './components/routing/routing.component';
 import { AuthGuard } from './guard/auth.guard';
 import {GameGridComponent} from './components/game-grid/game-grid.component'
 
-
+/*animations import */ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -41,6 +41,7 @@ import {GameGridComponent} from './components/game-grid/game-grid.component'
     AngularFireAuthModule,
     FormsModule,
     AngularFireDatabaseModule,
+    BrowserAnimationsModule /* Animations added*/
   ],
   providers: [
     AuthService,
