@@ -67,6 +67,7 @@ export class GameService {
 
   //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
   onHitCell(grid: Cell[][], x: number, y: number) {
+    console.log("I am player n° "+this.playerNumber) // ICI DEFINIR FIN DE TOUR
     if (this.getCellValue(grid, x, y) == "boat") {
       this.db.object('room/event')
         .set(this.message[0]);
