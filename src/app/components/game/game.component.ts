@@ -15,12 +15,13 @@ import { GameService } from '../../game.service';
 
 export class GameComponent implements OnInit {
   public eventStatus;
-  
+  public winnerDeclared;
 
   constructor(private db: AngularFireDatabase, public authService: AuthService, public gameService: GameService) {
 
   }
 
+  
 
   ngOnInit() {
    
@@ -31,11 +32,15 @@ export class GameComponent implements OnInit {
     this.gameService.checkMyUserNumber(this.authService.user).subscribe((playerNumber) => {
       
     });
+    this.gameService.winnerObserver.subscribe((winner)=>{
+      this.winnerDeclared = winner;
+    })
     this.db.object('room/event')
     .set(this.gameService.message[3]);
    
   }
 
+ 
   
-  
+
 }

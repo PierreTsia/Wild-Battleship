@@ -46,6 +46,7 @@ export class GameGridComponent implements OnInit {
   isClicked: boolean = false;
   isGridFull = false;
   public turnStatus;
+  
 
   private idBoat: number = 0;
   constructor(private db: AngularFireDatabase, public authService: AuthService, public gameService: GameService) { }
@@ -88,6 +89,8 @@ export class GameGridComponent implements OnInit {
       console.log("this is playerNumber from game grid:"+this.gameService.playerNumber);
       
     });
+    this.db.object('room/winner')
+    .set(0);
   }
 
   onItemClicked(x, y) {

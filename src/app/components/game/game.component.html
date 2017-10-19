@@ -1,25 +1,32 @@
-<p>
-  game works!
-</p>
-
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-6">
-       <div *ngIf="" class="blockingDiv2">
 
-       </div>
-        
+  <div class="row">
+    <div *ngIf="winnerDeclared != 0" class="victory-block col-md-12">
+      <div class="victory-message">
+        <span class="victory-message">Winner is Player {{winnerDeclared}}</span>
+        <a>
+          <button class="btn btn-danger" routerLink="/" >Replay</button>
+        </a>
+        <a>
+          <button class="btn btn-primary" routerLink="/">Home</button>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-6">
+
+
       <app-game-grid gridNumber="1"></app-game-grid>
     </div>
     <div class="col-md-6">
-      
       <app-game-grid gridNumber="2"></app-game-grid>
     </div>
   </div>
 </div>
 <hr>
 <div class="container">
-  
-  Alert Message :{{eventStatus}} 
-  
+
+  Alert Message :{{eventStatus}}
+
+
+
 </div>

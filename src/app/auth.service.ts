@@ -66,7 +66,7 @@ export class AuthService {
   logout() {
     this.firebaseAuth.auth.signOut();
     this.loggedIn = false;
-    this.disconnectPlayer(this.currentUserId);
+  //  this.disconnectPlayer(this.currentUserId);
   }
 
   facebookLogin() {
@@ -86,7 +86,7 @@ export class AuthService {
         this.updateUserData(this.authState.displayName);
         this.loggedIn = true;
         this.addInRoom(this.currentUserId);
-        this.disconnectPlayer(this.currentUserId)
+      //  this.disconnectPlayer(this.currentUserId)
       })
       .catch(error => console.log(error));
   }
@@ -124,10 +124,13 @@ export class AuthService {
       return;
     }
     let numPlayer = Math.floor(Math.random() * 2) + 1;
+    console.log("resultat du math random :"+numPlayer)
     let path = numPlayer == 1 ? "room/players/player1" : "room/players/player2";
     this.db.object(path).set(this.currentUserId);
   }
+  
   //verifier la presence du joueur 1 ou joueur 2
+ 
   private disconnectPlayer(currentUserId: string) {
     if (this.loggedIn == false) {
       this.db.object("room/players/player1").valueChanges().take(1).subscribe((player) => {

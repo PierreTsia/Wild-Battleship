@@ -13,22 +13,24 @@ export class GameService {
 
   public message = ["Bateau touché", "Bateau coulé", "Tous les bateaux coulés", ""];
   public eventObserver: Observable<{}>;
-  public turnObserver: Observable <any>;
-//  private myTurn:boolean = true;
+  public turnObserver: Observable<any>;
+  public winnerObserver: Observable<any>;
+  //  private myTurn:boolean = true;
 
   constructor(private db: AngularFireDatabase) {
     this.eventObserver = db.object('room/event').valueChanges();
     this.turnObserver = db.object('room/turn').valueChanges();
+    this.winnerObserver = db.object('room/winner').valueChanges();
   }
 
-  changeTurn(player: number){
-    if (player == 1){
+  changeTurn(player: number) {
+    if (player == 1) {
       this.db.object('room/turn')
-      .set(2);
+        .set(2);
     } else {
       this.db.object('room/turn')
-      .set(1);
-      
+        .set(1);
+
     }
   }
 
@@ -41,17 +43,17 @@ export class GameService {
     if (this.isMyGrid(gridNumber)) {
       //console.log("hummmm???"+this.authService.authState.displayName)
       return;
-      
+
     }
 
-  
+
 
     //CLONE GRID TO BE SENT TO FIREBASE DB
     let tmpGrid = Object.assign({}, grille);
 
     //CHANGE CELL TYPE ON HIT
     this.onHitCell(tmpGrid, x, y);
-    
+
 
     //CHANGE TURN NODE ON FB
     this.changeTurn(this.playerNumber);
@@ -71,7 +73,10 @@ export class GameService {
     if (this.howManySunkCells(tmpGrid) == 17) {
       this.db.object('room/event')
         .set(this.message[2]);
+      this.db.object('room/winner')
+        .set(this.playerNumber);
     }
+
 
     //SEND UPDATED GRID TO FIREBASE DB
     this.db.object('room/' + this.getFirebaseDBPath(gridNumber)).update(tmpGrid);
@@ -84,7 +89,7 @@ export class GameService {
 
   //CHANGE CELL TYPE ON HIT (IF BOAT => BOATHIT / IF WATER=>WATERHIT)
   onHitCell(grid: Cell[][], x: number, y: number) {
-   
+
     if (this.getCellValue(grid, x, y) == "boat") {
       this.db.object('room/event')
         .set(this.message[0]);
@@ -161,10 +166,10 @@ export class GameService {
       })
 
     return Observable.combineLatest(userIdObs, playersObs, (userId, players: { player1: string, player2: string }) => {
-      
+
       console.log("playerId: " + userId);
       console.log(players);
-      
+
       if (players.player1 == userId) {
         console.log("OK");
         return 1;
