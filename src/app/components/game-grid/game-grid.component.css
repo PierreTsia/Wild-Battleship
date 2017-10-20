@@ -2,28 +2,27 @@ ul {
   display: inline-block;
   margin: 0;
   padding: 0;
+    display: inline-block;
+    padding: 0;
 }
 
 li {
-  height: 50px;
-  width: 50px;
-  background-color: green;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  border: 1px solid black;
+    height: 50px;
+    width:50px;
+    background-color: blue;
+    list-style-type: none;
+    margin: 0;                                                                                 
+    padding: 0;
+    border: 1px solid #333;
 }
 
 li.water {
-  background: green;
+    background: #129BF7;
 }
 
 li.waterRed {
-  background: red;
-}
+    background: blue;
 
-li.opponentBoat {
-  background: red;
 }
 
 li.clicked {
@@ -40,6 +39,37 @@ li.waterHitClass {
 
 li.boatHitClass {
   background: purple;
+}
+
+
+li.waterHitClass{
+    background-image: Url(https://vectr.com/robertschmid/a6WPMiizH.svg?width=80&height=80&select=a6WPMiizHpage0);
+    background-size: cover;
+}
+
+li.boatHitClass{
+    background-image: Url(https://vectr.com/robertschmid/a1hHsZr5vk.svg?width=80&height=80&select=a1hHsZr5vkpage0);
+    background-size: cover;
+}
+li.shipSunkClass{
+    background: #333;
+}
+button{
+
+    color: #fff;
+    background-color: #6496c8;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px #27496d;
+      
+
+}
+.btn-danger, .btn-primary{
+    width: 450px;
+}
+
+.btn-primary{
+    margin-bottom: -8px;
 }
 
 li.shipSunkClass {

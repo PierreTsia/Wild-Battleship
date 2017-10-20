@@ -67,17 +67,16 @@ body { padding: 2em; }
 
 .authButtonsDiv {
 height: 50%;
-width: 400px;
 background opacity: 1;
 text-align: center;
 }
 
-.container {
-padding-left:30%;
-padding-top: 10%;
-padding-right: 30%;
-background-color: #D5C8FF;
-padding-bottom:  10%;
-margin-top: 10%
-  
+.container-fluid {
+
+padding-top: 2%;
+background-color: #6496c8;
+background-size: cover;
+padding-bottom: 10%;
+height: 350px;
+text-align: center; 
 }
