@@ -10,6 +10,7 @@ import * as firebase from 'firebase/app';
 export class GameService {
   //realPlayer ;
   playerNumber: number;
+  audio: any;
 
   public message = ["Bateau touché", "Bateau coulé", "Tous les bateaux coulés", ""];
   public eventObserver: Observable<{}>;
@@ -35,6 +36,7 @@ export class GameService {
   }
 
   isMyGrid(gridNumber: number) {
+    
     return ((this.playerNumber == 1 && gridNumber == 1) ||
       (this.playerNumber == 2 && gridNumber == 2));
   }
@@ -75,6 +77,7 @@ export class GameService {
         .set(this.message[2]);
       this.db.object('room/winner')
         .set(this.playerNumber);
+        this.playsoundOnVictory();
     }
 
 
@@ -91,12 +94,15 @@ export class GameService {
   onHitCell(grid: Cell[][], x: number, y: number) {
 
     if (this.getCellValue(grid, x, y) == "boat") {
+      
       this.db.object('room/event')
         .set(this.message[0]);
+     this.playsoundOnHitclick();
       return grid[x][y].type = "boatHit";
 
 
     } else if (this.getCellValue(grid, x, y) == "water") {
+      this.playsoundOnclick();
       return grid[x][y].type = "waterHit";
     }
   }
@@ -140,6 +146,7 @@ export class GameService {
     for (let i = 0; i < grid[0].length; i++) {
       for (let j = 0; j < grid[0].length; j++) {
         if (grid[i][j].type == "shipSunk") {
+          
           result += 1;
 
         }
@@ -180,5 +187,32 @@ export class GameService {
     }).do((playerNumber) => {
       this.playerNumber = playerNumber;
     });
+  }
+  playsoundStart() {
+    this.audio = new Audio();
+    this.audio.src = "../../../assets/sound/Seagull_0.mp3";
+    this.audio.load();
+    this.audio.play()
+  }
+  playsoundOnclick() {
+
+    this.audio = new Audio();
+    this.audio.src = "../../../assets/sound/Sonar_Coat.mp3";
+    this.audio.load();
+    this.audio.play();
+  }
+  playsoundOnHitclick() {
+
+    this.audio = new Audio();
+    this.audio.src = "../../../assets/sound/explosion_hyd.mp3";
+    this.audio.load();
+    this.audio.play();
+  }
+  playsoundOnVictory() {
+
+    this.audio = new Audio();
+    this.audio.src = "../../../assets/sound/Seagull_0.mp3";
+    this.audio.load();
+    this.audio.play();
   }
 }
