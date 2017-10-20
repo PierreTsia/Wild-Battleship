@@ -12,11 +12,11 @@ background-color: #333;
 
 .victory-block {
     width: 100vw;
-    height: 600px;
+    height: 100vh;
     position: absolute;
-    top: 0px;
+    top: 0;
     z-index:100000;
-    background: lightblue;
+    background: rgb(173, 218, 230);
   }
   
   .victory-message{
@@ -28,4 +28,16 @@ background-color: #333;
       margin: auto;
       padding:20px;
       
+  }
+  
+  .alert{
+    background-color: lightblue;
+    margin-bottom: 50px;
+   
+   
+  }
+
+  .container-fluid{
+    height: 100vh;
+    padding-top: 50px;
   }
