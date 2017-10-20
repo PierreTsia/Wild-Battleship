@@ -4,8 +4,7 @@
     <li *ngFor="let cell of col; let y = index" (click)="onItemClicked(x, y)" [ngClass]="getNgClass(cell)">
     </li>
   </ul>
-  <div *ngIf="(turnStatus == 1 && gameService.playerNumber == 2)
-  || (turnStatus == 2 && gameService.playerNumber == 1)" class="blockThePlayer"></div>
+  <div *ngIf="(turnStatus == 1 && gameService.playerNumber == 2) || (turnStatus == 2 && gameService.playerNumber == 1)" class="blockThePlayer"></div>
 </div>
 
 <div class="div">

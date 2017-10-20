@@ -38,7 +38,7 @@ li.boatHitClass {
   background: purple;
 }
 
-<<<<<<< HEAD
+
 li.waterHitClass{
     background-image: Url(https://vectr.com/robertschmid/a6WPMiizH.svg?width=80&height=80&select=a6WPMiizHpage0);
     background-size: cover;
@@ -68,7 +68,7 @@ button{
 .btn-primary{
     margin-bottom: -8px;
 }
-=======
+
 li.shipSunkClass {
   background: black;
 }
@@ -79,4 +79,3 @@ li.shipSunkClass {
   position: absolute;
   top: 0px;
 }
->>>>>>> devprop
