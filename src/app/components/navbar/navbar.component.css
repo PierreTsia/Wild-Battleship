@@ -1,16 +1,59 @@
 .logSign{
 padding: 5px;
+font-size: 0.8em;
+color: #fff;
+background-color: #6496c8;
+border: none;
+border-radius: 5px;
+box-shadow: 0 5px #27496d;
+margin-left: 5px;
+width: 100px;
+text-align: center;
 
+}
+.navbar-light .navbar-nav .nav-link{
+    color: white;
 }
 
 .btn-danger{
 font-size: 0.8em;
+color: #fff;
+background-color: #6496c8;
+border: none;
+border-radius: 5px;
+box-shadow: 0 5px #27496d;
 }
 
 .avatar{
     margin-right:5px;
-    margin-top: 1px;
+    border-radius: 3px;  
 }
 .loggedInText{
     font-size: 0.8em;
+}
+.liensStyle{
+    font-size: 0.8em;
+    margin-left: 5px;
+    padding: 5px;
+    background-color: #6496c8;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 5px #27496d;
+    width: 100px;
+    text-align: center;
+    color: #fff;
+}
+.logo{
+    width: 50px;
+}
+.loggedInText{
+    font: 12pt Arial;
+    color:#27496d;
+    background-color: #6496c8;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: rgba(255,255,255,0.5) 0px 3px 3px;
+    margin: 5px;
 }

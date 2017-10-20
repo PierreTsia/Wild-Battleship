@@ -74,8 +74,9 @@ text-align: center;
 .container-fluid {
 
 padding-top: 2%;
-background-color: #4964FF;
+background-color: #6496c8;
 background-size: cover;
 padding-bottom: 10%;
+height: 350px;
 text-align: center; 
 }

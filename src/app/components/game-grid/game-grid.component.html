@@ -1,12 +1,15 @@
-<button *ngIf="isGridFull" (click)="resetGrid()" class="btn btn-primary">Reset</button>
-<p>{{square}}</p>
-<button *ngIf="!isGridFull && gameService.isMyGrid(gridNumber)" (click)="generatePlayerGrid()" class="btn btn-danger">PLACE YOUR SHIP!</button>
+
 <div class="grid-block">
   <ul id="{{x}}" *ngFor="let col of grille; let x = index">
     <li *ngFor="let cell of col; let y = index" (click)="onItemClicked(x, y)" [ngClass]="getNgClass(cell)">
-      
     </li>
   </ul>
+</div>
+<div class="div">
+<button *ngIf="!isGridFull && gameService.isMyGrid(gridNumber)" (click)="generatePlayerGrid()" class="btn btn-danger">PLACE YOUR SHIPS!</button>
+<button *ngIf="isGridFull" (click)="resetGrid()" class="btn btn-primary">Reset</button>
+    <p>{{square}}</p>
+    
 </div>
 
 
