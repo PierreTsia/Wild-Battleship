@@ -45,7 +45,8 @@ export class GameGridComponent implements OnInit {
 
   isClicked: boolean = false;
   isGridFull = false;
-
+  public turnStatus;
+  
 
   private idBoat: number = 0;
   constructor(private db: AngularFireDatabase, public authService: AuthService, public gameService: GameService) { }
@@ -80,12 +81,24 @@ export class GameGridComponent implements OnInit {
     this.db.object('room/' + this.getFirebaseDBPath()).update(this.grille);
     this.db.object('room/' + this.getFirebaseDBPath()).valueChanges().subscribe((data: Cell[][]) => {
       this.grille = data;
+      
     });
+    this.gameService.turnObserver.subscribe((turn) => {
+      this.turnStatus = turn;
+      console.log("this is turn from game grid:"+this.turnStatus);
+      console.log("this is playerNumber from game grid:"+this.gameService.playerNumber);
+      
+    });
+    this.db.object('room/winner')
+    .set(0);
   }
 
   onItemClicked(x, y) {
     this.gameService.clicked(this.grille, x, y, this.gridNumber);
+    
   }
+
+
 
   resetGrid() {
     this.db.object('room/' + this.getFirebaseDBPath()).update(this.grilleVierge);

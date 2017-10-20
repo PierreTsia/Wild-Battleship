@@ -24,5 +24,9 @@
     <button *ngIf="!(authService.user | async)" routerLink="/game" class="loginBtn loginBtn--google col-md-offset-4 col-md-4 col-md-offset-4 logSignAuth" (click)="googleLogin()">
     Login with Google
   </button>
+
+  <button *ngIf="(authService.user | async)" routerLink="/game" class="btn btn-success " >
+    Play Game
+  </button>
   </div>
 </div>
