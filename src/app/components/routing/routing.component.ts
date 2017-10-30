@@ -10,7 +10,7 @@ import {GameGridComponent} from '../game-grid/game-grid.component';
 
 export const appRoutes: Routes = [
   {path:'', component:HomeComponent},
-  {path:'game',/*canActivate: [AuthGuard],*/ component:GameComponent},
+  {path:'game',canActivate: [AuthGuard], component:GameComponent},
   {path:'auth', component:AuthenticationComponent},
   {path:'grid', component:GameGridComponent}
 
