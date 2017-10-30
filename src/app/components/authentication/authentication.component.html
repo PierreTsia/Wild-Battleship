@@ -1,30 +1,32 @@
-<p *ngIf="authService.user | async">Welcome {{ (authService.user | async)?.email }}!</p>
-
-
+<!--
 <div *ngIf="!(authService.user | async)">
-
+  <input type="text" [(ngModel)]="userName" placeholder="user name">
   <input type="text" [(ngModel)]="email" placeholder="email">
-  <input type="password" [(ngModel)]="password" placeholder="email">
+  <input type="password" [(ngModel)]="password" placeholder="password">
 
   <button (click)="signup()" [disabled]="!email || !password">
     Signup
   </button>
+  <div *ngIf="errorMailAlreadyUse">Mail déjà uilisé</div>
 
   <button (click)="login()" [disabled]="!email || !password">
     Login
   </button>
 </div>
+-->
 
-<button (click)="logout()" *ngIf="authService.user | async">
-  Logout
-</button>
-
-<button class="loginBtn loginBtn--facebook">
+<div class="container-fluid">
+  <div class="authButtonsDiv">
+    <button *ngIf="!(authService.user | async)" routerLink="/game" class="loginBtn loginBtn--facebook col-md-offset-4 col-md-4 col-md-offset-4 logSignAuth" (click)="facebookLogin()">
     Login with Facebook
   </button>
-  
-  <button class="loginBtn loginBtn--google">
+
+    <button *ngIf="!(authService.user | async)" routerLink="/game" class="loginBtn loginBtn--google col-md-offset-4 col-md-4 col-md-offset-4 logSignAuth" (click)="googleLogin()">
     Login with Google
   </button>
 
-
+  <button *ngIf="(authService.user | async)" routerLink="/game" class="btn btn-success " >
+    Play Game
+  </button>
+  </div>
+</div>
