@@ -10,9 +10,8 @@ Projet [Wild-Code-School La Loupe](https://wildcodeschool.fr/) n°2 : Octobre 20
 
 
 ## Details:
-
-⋅⋅* Front : Angular 4, Typescript
-⋅⋅* Back : Firebase
+* Front : Angular 4, Typescript
+* Back : Firebase
 
 ## Development server
 
